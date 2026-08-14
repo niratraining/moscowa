@@ -1,7 +1,7 @@
 "use client";
 
 import { Users } from "lucide-react";
-import { DatePicker } from "./DatePicker";
+import { DatePicker, DateRangePicker } from "./DatePicker";
 import { DestinationSelector } from "./DestinationSelector";
 import { hotelCities } from "@/data/homepage";
 import { cn } from "@/lib/utils";
@@ -21,17 +21,17 @@ function RoomGuestsField({
   label = "اتاق و مسافر",
 }: SimpleRoomGuestsProps) {
   return (
-    <div className="flex min-h-[76px] min-w-0 flex-1 items-center justify-between gap-3 px-4">
-      <div className="flex min-w-0 flex-col justify-center gap-1">
-        <span className="text-[12px] text-moscowa-text-muted">{label}</span>
-        <span className="flex items-center gap-2">
-          <Users className="h-4 w-4 shrink-0 text-moscowa-purple" aria-hidden />
-          <span className="whitespace-nowrap text-[15px] font-semibold text-moscowa-text">
-            {String(rooms).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])} اتاق،{" "}
-            {String(guests).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])} مهمان
-          </span>
+    <div
+      className="flex min-h-[64px] min-w-0 flex-1 items-center justify-between gap-3 px-4 py-3"
+      aria-label={label}
+    >
+      <span className="flex min-w-0 items-center gap-2">
+        <Users className="h-4 w-4 shrink-0 text-moscowa-purple" aria-hidden />
+        <span className="whitespace-nowrap text-[15px] font-semibold text-moscowa-text">
+          {String(rooms).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])} اتاق،{" "}
+          {String(guests).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])} مهمان
         </span>
-      </div>
+      </span>
       <div className="flex shrink-0 items-center gap-2">
         <button
           type="button"
@@ -74,7 +74,7 @@ function FieldShell({ children }: { children: React.ReactNode }) {
 }
 
 interface CitySelectFieldProps {
-  label: string;
+  label?: string;
   value: LocationValue | null;
   onChange: (value: LocationValue) => void;
   error?: string;
@@ -87,9 +87,11 @@ function CitySelectField({
   error,
 }: CitySelectFieldProps) {
   return (
-    <div className="flex min-h-[76px] min-w-0 flex-1 flex-col justify-center gap-2 px-4 py-3">
-      <span className="text-[12px] text-moscowa-text-muted">{label}</span>
-      <div className="flex flex-nowrap gap-2 overflow-x-auto no-scrollbar">
+    <div
+      className="flex min-h-[64px] min-w-0 flex-1 flex-col items-center justify-center gap-2 px-4 py-3"
+      aria-label={label}
+    >
+      <div className="flex flex-nowrap items-center justify-center gap-2 overflow-x-auto no-scrollbar">
         {hotelCities.map((item) => {
           const selected = value?.code === item.code;
           return (
@@ -132,20 +134,15 @@ export function HotelSearchForm({ state, errors, onChange }: FormProps) {
         error={errors.destination}
         onChange={(destination) => onChange({ destination })}
       />
-      <div className="flex min-w-0 flex-1 divide-x divide-moscowa-border">
-        <DatePicker
-          label="تاریخ ورود"
-          value={state.departureDate}
-          error={errors.departureDate}
-          onChange={(departureDate) => onChange({ departureDate })}
-        />
-        <DatePicker
-          label="تاریخ خروج"
-          value={state.returnDate}
-          error={errors.returnDate}
-          onChange={(returnDate) => onChange({ returnDate })}
-        />
-      </div>
+      <DateRangePicker
+        checkIn={state.departureDate}
+        checkOut={state.returnDate}
+        checkInError={errors.departureDate}
+        checkOutError={errors.returnDate}
+        onChange={(departureDate, returnDate) =>
+          onChange({ departureDate, returnDate })
+        }
+      />
       <RoomGuestsField
         rooms={state.rooms}
         guests={state.guests}
