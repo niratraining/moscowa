@@ -130,18 +130,20 @@ export function HotelSearchForm({ state, errors, onChange }: FormProps) {
         error={errors.destination}
         onChange={(destination) => onChange({ destination })}
       />
-      <DatePicker
-        label="تاریخ ورود"
-        value={state.departureDate}
-        error={errors.departureDate}
-        onChange={(departureDate) => onChange({ departureDate })}
-      />
-      <DatePicker
-        label="تاریخ خروج"
-        value={state.returnDate}
-        error={errors.returnDate}
-        onChange={(returnDate) => onChange({ returnDate })}
-      />
+      <div className="flex min-w-0 flex-1 divide-x divide-moscowa-border">
+        <DatePicker
+          label="تاریخ ورود"
+          value={state.departureDate}
+          error={errors.departureDate}
+          onChange={(departureDate) => onChange({ departureDate })}
+        />
+        <DatePicker
+          label="تاریخ خروج"
+          value={state.returnDate}
+          error={errors.returnDate}
+          onChange={(returnDate) => onChange({ returnDate })}
+        />
+      </div>
       <RoomGuestsField
         rooms={state.rooms}
         guests={state.guests}
