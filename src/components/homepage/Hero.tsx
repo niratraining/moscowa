@@ -6,6 +6,14 @@ import { cn } from "@/lib/utils";
 
 const slides = [
   {
+    id: "moscow",
+    src: "/images/hero/moscow-red-square.jpg",
+    alt: "کلیسای جامع سنت باسیل در میدان سرخ مسکو",
+    objectPosition: "object-[50%_38%] sm:object-[50%_35%]",
+    ken: "motion-safe:animate-hero-ken",
+    caption: "مسکو را از نزدیک کشف کنید",
+  },
+  {
     id: "wing",
     src: "/images/hero/wing-sunset.jpg",
     alt: "بال هواپیما بالای ابرها در غروب",
@@ -28,14 +36,6 @@ const slides = [
     objectPosition: "object-[62%_48%] sm:object-[58%_45%]",
     ken: "motion-safe:animate-hero-ken-pan",
     caption: "اقامت‌هایی که خاطره می‌سازند",
-  },
-  {
-    id: "hafez",
-    src: "/images/hero/hafez-shiraz.jpg",
-    alt: "آرامگاه حافظ در شیراز هنگام غروب",
-    objectPosition: "object-[48%_42%]",
-    ken: "motion-safe:animate-hero-ken",
-    caption: "ایران را از نزدیک کشف کنید",
   },
   {
     id: "coast",
