@@ -1,7 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Headphones, Menu, X } from "lucide-react";
+import { mainNav, siteConfig } from "@/data/homepage";
 import { cn } from "@/lib/utils";
 
 const slides = [
@@ -47,6 +51,8 @@ const SLIDE_MS = 6500;
 export function Hero() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (paused) return;
@@ -56,9 +62,14 @@ export function Hero() {
     return () => window.clearInterval(id);
   }, [paused]);
 
+  function isActive(href: string) {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(`${href}/`);
+  }
+
   return (
     <section
-      className="relative isolate h-[520px] overflow-hidden sm:h-[580px] lg:h-[640px]"
+      className="relative isolate h-[300px] overflow-hidden sm:h-[340px] lg:h-[380px]"
       aria-label="معرفی مسکوا"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -105,22 +116,65 @@ export function Hero() {
         aria-hidden
       />
 
-      <div className="container-page relative z-10 flex h-full flex-col justify-between pb-28 pt-10 sm:pb-32 sm:pt-12 lg:pb-36 lg:pt-14">
-        <div className="max-w-2xl">
-          <p className="mb-4 text-[13px] font-semibold tracking-[0.18em] text-moscowa-orange motion-safe:animate-fade-up sm:text-[14px]">
-            MOSCOWA
-          </p>
+      {/* Hamburger menu overlay — replaces the site header on the hero image */}
+      <div className="container-page absolute inset-x-0 top-0 z-20 flex h-[72px] items-center justify-end sm:h-20">
+        <button
+          type="button"
+          className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white backdrop-blur-md transition-colors hover:bg-white/20"
+          aria-expanded={menuOpen}
+          aria-controls="hero-nav-menu"
+          aria-label={menuOpen ? "بستن منو" : "باز کردن منو"}
+          onClick={() => setMenuOpen((prev) => !prev)}
+        >
+          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
 
-          <h1 className="font-extrabold leading-[1.12] tracking-tight text-white drop-shadow-[0_4px_28px_rgba(12,8,24,0.45)] motion-safe:animate-fade-up motion-safe:[animation-delay:80ms]">
-            <span className="block text-[30px] sm:text-[42px] lg:text-[50px]">
-              رزرو هتل در
-            </span>
-            <span className="relative mt-1 inline-block bg-[linear-gradient(90deg,#ff8c28_0%,#ffcf8a_45%,#ff8c28_100%)] bg-clip-text text-[34px] text-transparent sm:text-[48px] lg:text-[58px]">
-              مسکو، سن‌پترزبورگ، سوچی
-            </span>
-          </h1>
+      {menuOpen ? (
+        <div
+          id="hero-nav-menu"
+          className="container-page absolute inset-x-0 top-[72px] z-20 sm:top-20"
+        >
+          <nav
+            aria-label="منوی اصلی"
+            className="ms-auto flex max-w-xs flex-col gap-1 rounded-2xl border border-white/10 bg-white p-3 shadow-card"
+          >
+            {mainNav.map((item) => (
+              <Link
+                key={item.id}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className={cn(
+                  "rounded-xl px-3 py-2.5 text-[14px] font-medium transition-colors",
+                  isActive(item.href)
+                    ? "bg-moscowa-bg-secondary text-moscowa-orange"
+                    : "text-moscowa-text-secondary hover:bg-moscowa-bg-secondary hover:text-moscowa-purple",
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <div className="mt-2 flex flex-col gap-2 border-t border-moscowa-border pt-3">
+              <a
+                href={siteConfig.phoneHref}
+                className="inline-flex items-center gap-2 px-3 py-2 text-moscowa-purple"
+              >
+                <Headphones className="h-4 w-4" />
+                <span dir="ltr">{siteConfig.phone}</span>
+              </a>
+              <Link
+                href="/account"
+                onClick={() => setMenuOpen(false)}
+                className="inline-flex h-11 w-full items-center justify-center rounded-[11px] border border-[color-mix(in_srgb,var(--color-moscowa-purple)_28%,white)] bg-white text-[15px] font-semibold text-moscowa-purple transition-colors hover:bg-moscowa-bg-secondary"
+              >
+                ورود / ثبت‌نام
+              </Link>
+            </div>
+          </nav>
         </div>
+      ) : null}
 
+      <div className="container-page relative z-10 flex h-full flex-col justify-end pb-6 pt-10 sm:pb-8 sm:pt-12 lg:pb-10 lg:pt-14">
         <div className="flex items-center gap-3 motion-safe:animate-fade-up motion-safe:[animation-delay:240ms]">
           <div className="flex gap-2" role="tablist" aria-label="اسلایدهای هیرو">
             {slides.map((slide, index) => (

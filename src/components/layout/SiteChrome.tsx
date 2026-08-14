@@ -8,6 +8,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isPanel =
     pathname.startsWith("/account") || pathname.startsWith("/admin");
+  const isHome = pathname === "/";
 
   if (isPanel) {
     return <>{children}</>;
@@ -15,7 +16,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <Header />
+      {isHome ? null : <Header />}
       <main id="main-content">{children}</main>
       <Footer />
     </>
