@@ -63,10 +63,10 @@ export default function HomePage() {
       <JsonLd />
       <Hero />
       <TravelSearch />
+      <PopularDestinations />
       <QuickServices />
       <PromoBanners />
       <DestinationSpotlight />
-      <PopularDestinations />
       <AITravelAssistant />
       <InstallmentTravel />
       <WhyMoscowa />
