@@ -28,7 +28,7 @@ interface TravelSearchProps {
 }
 
 export function TravelSearch({
-  initialService = "flight",
+  initialService = "hotel",
   embedded = false,
 }: TravelSearchProps) {
   const router = useRouter();

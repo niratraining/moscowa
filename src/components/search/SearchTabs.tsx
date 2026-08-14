@@ -1,11 +1,8 @@
 "use client";
 
 import {
-  Bus,
-  Building2,
   Hotel,
   Plane,
-  TrainFront,
   TentTree,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -16,12 +13,8 @@ const tabs: {
   label: string;
   icon: typeof Plane;
 }[] = [
-  { id: "flight", label: "پرواز", icon: Plane },
   { id: "hotel", label: "هتل", icon: Hotel },
   { id: "tour", label: "تور", icon: TentTree },
-  { id: "stay", label: "اقامتگاه", icon: Building2 },
-  { id: "train", label: "قطار", icon: TrainFront },
-  { id: "bus", label: "اتوبوس", icon: Bus },
 ];
 
 interface SearchTabsProps {

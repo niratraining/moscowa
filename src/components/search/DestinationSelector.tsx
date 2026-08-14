@@ -14,6 +14,7 @@ interface DestinationSelectorProps {
   options?: CityOption[];
   placeholder?: string;
   secondaryKey?: "subtitle" | "code";
+  searchable?: boolean;
 }
 
 export function DestinationSelector({
@@ -24,6 +25,7 @@ export function DestinationSelector({
   options = cities,
   placeholder = "انتخاب کنید",
   secondaryKey = "subtitle",
+  searchable = true,
 }: DestinationSelectorProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -40,15 +42,17 @@ export function DestinationSelector({
     return () => document.removeEventListener("mousedown", onPointerDown);
   }, []);
 
-  const filtered = options.filter((item) => {
-    const q = query.trim();
-    if (!q) return true;
-    return (
-      item.name.includes(q) ||
-      item.code.toLowerCase().includes(q.toLowerCase()) ||
-      (item.subtitle ?? "").includes(q)
-    );
-  });
+  const filtered = searchable
+    ? options.filter((item) => {
+        const q = query.trim();
+        if (!q) return true;
+        return (
+          item.name.includes(q) ||
+          item.code.toLowerCase().includes(q.toLowerCase()) ||
+          (item.subtitle ?? "").includes(q)
+        );
+      })
+    : options;
 
   return (
     <div
@@ -103,13 +107,15 @@ export function DestinationSelector({
           role="listbox"
           className="absolute inset-x-0 top-[calc(100%-6px)] z-50 origin-top rounded-2xl border border-moscowa-border bg-white p-2 shadow-search"
         >
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="جستجوی شهر یا فرودگاه"
-            className="mb-2 h-10 w-full rounded-xl border border-moscowa-border bg-moscowa-bg-secondary px-3 text-sm outline-none focus:border-moscowa-purple"
-            aria-label="جستجوی مقصد"
-          />
+          {searchable ? (
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="جستجوی شهر یا فرودگاه"
+              className="mb-2 h-10 w-full rounded-xl border border-moscowa-border bg-moscowa-bg-secondary px-3 text-sm outline-none focus:border-moscowa-purple"
+              aria-label="جستجوی مقصد"
+            />
+          ) : null}
           <ul className="max-h-56 overflow-auto">
             {filtered.length === 0 ? (
               <li className="px-3 py-4 text-center text-sm text-moscowa-text-secondary">

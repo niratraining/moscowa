@@ -97,6 +97,12 @@ export const cities: CityOption[] = [
   { code: "AYT", name: "آنتالیا", subtitle: "آنتالیا" },
 ];
 
+export const hotelCities: CityOption[] = [
+  { code: "MOW", name: "مسکو", subtitle: "مسکو، روسیه" },
+  { code: "LED", name: "سن پترزبورگ", subtitle: "سن پترزبورگ، روسیه" },
+  { code: "AER", name: "سوچی", subtitle: "سوچی، روسیه" },
+];
+
 export const quickServices: QuickService[] = [
   {
     id: "club",

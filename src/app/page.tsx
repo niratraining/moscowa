@@ -1,6 +1,5 @@
 import { AITravelAssistant } from "@/components/homepage/AITravelAssistant";
 import { AppDownload } from "@/components/homepage/AppDownload";
-import { CorporateTravel } from "@/components/homepage/CorporateTravel";
 import { DestinationSpotlight } from "@/components/homepage/DestinationSpotlight";
 import { FooterTrust } from "@/components/homepage/FooterTrust";
 import { Hero } from "@/components/homepage/Hero";
@@ -8,7 +7,6 @@ import { InstallmentTravel } from "@/components/homepage/InstallmentTravel";
 import { PopularDestinations } from "@/components/homepage/PopularDestinations";
 import { PromoBanners } from "@/components/homepage/PromoBanners";
 import { QuickServices } from "@/components/homepage/QuickServices";
-import { TravelGuide } from "@/components/homepage/TravelGuide";
 import { WhyMoscowa } from "@/components/homepage/WhyMoscowa";
 import { TravelSearch } from "@/components/search/TravelSearch";
 import { siteConfig } from "@/data/homepage";
@@ -71,11 +69,9 @@ export default function HomePage() {
       <PopularDestinations />
       <AITravelAssistant />
       <InstallmentTravel />
-      <CorporateTravel />
       <WhyMoscowa />
       <FooterTrust />
       <AppDownload />
-      <TravelGuide />
     </>
   );
 }
