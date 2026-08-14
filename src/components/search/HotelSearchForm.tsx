@@ -4,6 +4,7 @@ import { Users } from "lucide-react";
 import { DatePicker, DateRangePicker } from "./DatePicker";
 import { DestinationSelector } from "./DestinationSelector";
 import { HotelDestinationCombobox } from "./HotelDestinationCombobox";
+import { HotelRoomGuestsSelector } from "./RoomGuestsSelector";
 import { cn } from "@/lib/utils";
 import type { SearchErrors, TravelSearchState } from "./types";
 
@@ -91,7 +92,7 @@ export function HotelSearchForm({ state, errors, onChange }: FormProps) {
           onChange({ departureDate, returnDate })
         }
       />
-      <RoomGuestsField
+      <HotelRoomGuestsSelector
         rooms={state.rooms}
         guests={state.guests}
         onChange={onChange}

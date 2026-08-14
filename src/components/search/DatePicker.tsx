@@ -12,7 +12,7 @@ import {
   valueStringFromJdn,
 } from "@/lib/jalali";
 
-function useOutsideClose(open: boolean, setOpen: (v: boolean) => void) {
+export function useOutsideClose(open: boolean, setOpen: (v: boolean) => void) {
   const rootRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!open) return;
