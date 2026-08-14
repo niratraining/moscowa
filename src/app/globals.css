@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @theme {
   --color-moscowa-purple: #4f2f7c;
   --color-moscowa-purple-dark: #3d2460;

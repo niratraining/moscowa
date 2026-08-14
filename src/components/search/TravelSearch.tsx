@@ -153,11 +153,7 @@ export function TravelSearch({
                     بلیط فقط رفت
                   </label>
                 </div>
-              ) : (
-                <div className="text-[13px] text-moscowa-text-muted">
-                  جستجوی سریع و شفاف با قیمت واقعی
-                </div>
-              )}
+              ) : null}
 
               <Button
                 type="submit"

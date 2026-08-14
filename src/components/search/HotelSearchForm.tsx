@@ -21,16 +21,18 @@ function RoomGuestsField({
   label = "اتاق و مسافر",
 }: SimpleRoomGuestsProps) {
   return (
-    <div className="flex min-h-[76px] min-w-0 flex-1 flex-col justify-center gap-1 px-4">
-      <span className="text-[12px] text-moscowa-text-muted">{label}</span>
-      <span className="flex items-center gap-2">
-        <Users className="h-4 w-4 text-moscowa-purple" aria-hidden />
-        <span className="text-[15px] font-semibold text-moscowa-text">
-          {String(rooms).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])} اتاق،{" "}
-          {String(guests).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])} مهمان
+    <div className="flex min-h-[76px] min-w-0 flex-1 items-center justify-between gap-3 px-4">
+      <div className="flex min-w-0 flex-col justify-center gap-1">
+        <span className="text-[12px] text-moscowa-text-muted">{label}</span>
+        <span className="flex items-center gap-2">
+          <Users className="h-4 w-4 shrink-0 text-moscowa-purple" aria-hidden />
+          <span className="whitespace-nowrap text-[15px] font-semibold text-moscowa-text">
+            {String(rooms).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])} اتاق،{" "}
+            {String(guests).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])} مهمان
+          </span>
         </span>
-      </span>
-      <div className="mt-1 flex gap-2">
+      </div>
+      <div className="flex shrink-0 items-center gap-2">
         <button
           type="button"
           className="rounded-lg bg-moscowa-bg-secondary px-2 py-1 text-[11px] text-moscowa-text-secondary"
@@ -87,7 +89,7 @@ function CitySelectField({
   return (
     <div className="flex min-h-[76px] min-w-0 flex-1 flex-col justify-center gap-2 px-4 py-3">
       <span className="text-[12px] text-moscowa-text-muted">{label}</span>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-nowrap gap-2 overflow-x-auto no-scrollbar">
         {hotelCities.map((item) => {
           const selected = value?.code === item.code;
           return (
@@ -103,7 +105,7 @@ function CitySelectField({
                 })
               }
               className={cn(
-                "rounded-xl border px-3 py-2 text-[14px] font-medium transition-colors",
+                "shrink-0 whitespace-nowrap rounded-xl border px-3 py-2 text-[14px] font-medium transition-colors",
                 selected
                   ? "border-moscowa-purple bg-moscowa-purple/10 text-moscowa-purple"
                   : "border-moscowa-border bg-white text-moscowa-text-secondary hover:border-moscowa-purple/60 hover:text-moscowa-purple",
