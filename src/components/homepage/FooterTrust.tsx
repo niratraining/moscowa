@@ -2,7 +2,8 @@ import { trustPoints } from "@/data/homepage";
 
 export function FooterTrust() {
   return (
-    <section className="border-y border-moscowa-border bg-white" aria-label="اعتماد و اطمینان">
+    <section className="border-y border-moscowa-border bg-white" aria-label="اعتماد و
+      اطمینان">
       <div className="container-page py-8 sm:py-10">
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {trustPoints.map((point) => (
