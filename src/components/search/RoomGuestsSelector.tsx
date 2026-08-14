@@ -119,46 +119,53 @@ export function HotelRoomGuestsSelector({ rooms, guests, onChange }: HotelRoomGu
 
       {open ? (
         <div
-          id={panelId}
-          role="dialog"
-          aria-label="اتاق و مسافران"
-          className="absolute z-50 top-[calc(100%+8px)] right-0 w-72 max-w-[calc(100vw-1.25rem)] origin-top animate-[calendar-pop_0.16s_ease-out_both] rounded-2xl border border-moscowa-border bg-white p-4 shadow-search"
+          className={cn(
+            "absolute z-50 top-[calc(100%+8px)] w-full max-w-[calc(100vw-1.25rem)] origin-top animate-[calendar-pop_0.16s_ease-out_both]",
+            "right-0 inset-x-0 lg:inset-x-auto lg:w-[320px]",
+          )}
         >
-          <StepperRow
-            icon={Bed}
-            label="اتاق"
-            value={rooms}
-            min={1}
-            max={MAX_ROOMS}
-            onChange={handleRooms}
-          />
-          <div className="border-t border-moscowa-border" />
-          <StepperRow
-            icon={Users}
-            label="بزرگسال"
-            sublabel="۱۳ سال به بالا"
-            value={adults}
-            min={rooms}
-            max={MAX_ADULTS}
-            onChange={handleAdults}
-          />
-          <div className="border-t border-moscowa-border" />
-          <StepperRow
-            icon={Baby}
-            label="کودک"
-            sublabel="۰ تا ۱۲ سال"
-            value={children}
-            min={0}
-            max={MAX_CHILDREN}
-            onChange={handleChildren}
-          />
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            className="mt-3 h-10 w-full rounded-xl bg-moscowa-purple text-sm font-semibold text-white transition-colors hover:bg-moscowa-purple-dark"
+          <div
+            id={panelId}
+            role="dialog"
+            aria-label="اتاق و مسافران"
+            className="rounded-2xl border border-moscowa-border bg-white p-4 shadow-search"
           >
-            تأیید
-          </button>
+            <StepperRow
+              icon={Bed}
+              label="اتاق"
+              value={rooms}
+              min={1}
+              max={MAX_ROOMS}
+              onChange={handleRooms}
+            />
+            <div className="border-t border-moscowa-border" />
+            <StepperRow
+              icon={Users}
+              label="بزرگسال"
+              sublabel="۱۳ سال به بالا"
+              value={adults}
+              min={rooms}
+              max={MAX_ADULTS}
+              onChange={handleAdults}
+            />
+            <div className="border-t border-moscowa-border" />
+            <StepperRow
+              icon={Baby}
+              label="کودک"
+              sublabel="۰ تا ۱۲ سال"
+              value={children}
+              min={0}
+              max={MAX_CHILDREN}
+              onChange={handleChildren}
+            />
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="mt-3 h-10 w-full rounded-xl bg-moscowa-purple text-sm font-semibold text-white transition-colors hover:bg-moscowa-purple-dark"
+            >
+              تأیید
+            </button>
+          </div>
         </div>
       ) : null}
     </div>
