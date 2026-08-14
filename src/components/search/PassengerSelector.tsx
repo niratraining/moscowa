@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { Minus, Plus, Users } from "lucide-react";
+import { Minus, Plus, UsersRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   cabinClassLabels,
@@ -91,7 +91,7 @@ export function PassengerSelector({ value, onChange }: PassengerSelectorProps) {
       >
         <span className="text-[12px] text-moscowa-text-muted">مسافران و کلاس</span>
         <span className="flex items-center gap-2">
-          <Users className="h-4 w-4 shrink-0 text-moscowa-purple" aria-hidden />
+          <UsersRound className="h-4 w-4 shrink-0 text-moscowa-purple" aria-hidden />
           <span className="text-[15px] font-semibold text-moscowa-text">
             {passengerSummary(value)}
           </span>

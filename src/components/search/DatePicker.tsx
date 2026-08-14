@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, CalendarRange } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DatePickerProps {
@@ -197,7 +197,7 @@ export function DateRangePicker({
           error && "bg-red-50/60",
         )}
       >
-        <CalendarDays
+        <CalendarRange
           className="h-4 w-4 shrink-0 text-moscowa-purple"
           aria-hidden
         />
