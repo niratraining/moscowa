@@ -3,6 +3,34 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { CalendarDays, CalendarRange } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CalendarPopover } from "./Calendar";
+import {
+  type CalendarSystem,
+  formatFullLabel,
+  jdnFromValueString,
+  todayJdn,
+  valueStringFromJdn,
+} from "@/lib/jalali";
+
+function useOutsideClose(open: boolean, setOpen: (v: boolean) => void) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open, setOpen]);
+  return rootRef;
+}
 
 interface DatePickerProps {
   label: string;
@@ -11,12 +39,11 @@ interface DatePickerProps {
   error?: string;
   disabled?: boolean;
   helper?: string;
+  /** Disallow dates before today. Defaults to true — travel search dates are always upcoming. */
+  disallowPast?: boolean;
 }
 
-/**
- * Lightweight Persian-friendly date field.
- * Architecture allows swapping in a full Jalali calendar later.
- */
+/** Single-date field backed by the dual Jalali/Gregorian calendar popover. */
 export function DatePicker({
   label,
   value,
@@ -24,31 +51,22 @@ export function DatePicker({
   error,
   disabled,
   helper,
+  disallowPast = true,
 }: DatePickerProps) {
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState(value);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const [system, setSystem] = useState<CalendarSystem>("jalali");
+  const selectedJdn = jdnFromValueString(value);
+  const [anchorJdn, setAnchorJdn] = useState(() => selectedJdn ?? todayJdn());
+  const rootRef = useOutsideClose(open, setOpen);
   const panelId = useId();
 
   useEffect(() => {
-    setDraft(value);
-  }, [value]);
-
-  useEffect(() => {
-    function onPointerDown(event: MouseEvent) {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", onPointerDown);
-    return () => document.removeEventListener("mousedown", onPointerDown);
-  }, []);
+    if (open) setAnchorJdn(selectedJdn ?? todayJdn());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   return (
-    <div
-      ref={rootRef}
-      className={cn("relative min-w-0 flex-1 overflow-visible", open && "z-50")}
-    >
+    <div ref={rootRef} className={cn("relative min-w-0 flex-1 overflow-visible", open && "z-50")}>
       <button
         type="button"
         disabled={disabled}
@@ -63,64 +81,35 @@ export function DatePicker({
       >
         <span className="text-[12px] text-moscowa-text-muted">{label}</span>
         <span className="flex items-center gap-2">
-          <CalendarDays
-            className="h-4 w-4 shrink-0 text-moscowa-purple"
-            aria-hidden
-          />
+          <CalendarDays className="h-4 w-4 shrink-0 text-moscowa-purple" aria-hidden />
           <span className="text-[15px] font-semibold text-moscowa-text">
-            {value || "انتخاب تاریخ"}
+            {selectedJdn !== null ? formatFullLabel(selectedJdn) : value || "انتخاب تاریخ"}
           </span>
         </span>
-        {helper ? (
-          <span className="pr-6 text-[12px] text-moscowa-text-secondary">
-            {helper}
-          </span>
-        ) : null}
+        {helper ? <span className="pr-6 text-[12px] text-moscowa-text-secondary">{helper}</span> : null}
       </button>
 
-      {error ? (
-        <p className="absolute bottom-1 right-4 text-[11px] text-red-600">
-          {error}
-        </p>
-      ) : null}
+      {error ? <p className="absolute bottom-1 right-4 text-[11px] text-red-600">{error}</p> : null}
 
       {open ? (
-        <div
-          id={panelId}
-          role="dialog"
-          aria-label={label}
-          className="absolute inset-x-0 top-[calc(100%-6px)] z-50 rounded-2xl border border-moscowa-border bg-white p-4 shadow-search"
-        >
-          <label className="mb-2 block text-xs text-moscowa-text-secondary">
-            تاریخ شمسی (YYYY/MM/DD)
-          </label>
-          <input
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            placeholder="۱۴۰۵/۰۳/۱۰"
-            className="h-11 w-full rounded-xl border border-moscowa-border px-3 text-sm outline-none focus:border-moscowa-purple"
-            dir="ltr"
-          />
-          <div className="mt-3 flex gap-2">
-            <button
-              type="button"
-              className="h-10 flex-1 rounded-xl bg-moscowa-purple text-sm font-semibold text-white transition-colors hover:bg-moscowa-purple-dark"
-              onClick={() => {
-                onChange(draft.trim());
-                setOpen(false);
-              }}
-            >
-              تأیید
-            </button>
-            <button
-              type="button"
-              className="h-10 flex-1 rounded-xl border border-moscowa-border text-sm text-moscowa-text-secondary"
-              onClick={() => setOpen(false)}
-            >
-              انصراف
-            </button>
-          </div>
-        </div>
+        <CalendarPopover
+          panelId={panelId}
+          ariaLabel={label}
+          mode="single"
+          system={system}
+          onSystemChange={setSystem}
+          anchorJdn={anchorJdn}
+          onAnchorChange={setAnchorJdn}
+          startJdn={selectedJdn}
+          endJdn={null}
+          minJdn={disallowPast ? todayJdn() : undefined}
+          monthsToShow={1}
+          onDayClick={(jdn) => {
+            onChange(valueStringFromJdn(jdn));
+            setOpen(false);
+          }}
+          onClear={() => onChange("")}
+        />
       ) : null}
     </div>
   );
@@ -135,12 +124,13 @@ interface DateRangePickerProps {
   checkInError?: string;
   checkOutError?: string;
   disabled?: boolean;
+  /** Duration shortcuts shown once a start date is picked, e.g. hotel nights. */
+  quickNights?: number[];
 }
 
 /**
- * Single-row combined check-in / check-out field (Booking.com style).
- * Collapsed state shows one line: icon + "checkIn - checkOut".
- * Expanded panel still edits both dates, just from one shared box.
+ * Single-row combined check-in / check-out field (Booking.com / Trip.com style),
+ * opening a two-month range calendar with a Jalali/Gregorian toggle.
  */
 export function DateRangePicker({
   checkInLabel = "تاریخ ورود",
@@ -151,40 +141,48 @@ export function DateRangePicker({
   checkInError,
   checkOutError,
   disabled,
+  quickNights = [1, 2, 3, 7],
 }: DateRangePickerProps) {
   const [open, setOpen] = useState(false);
-  const [draftIn, setDraftIn] = useState(checkIn);
-  const [draftOut, setDraftOut] = useState(checkOut);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const [system, setSystem] = useState<CalendarSystem>("jalali");
+  const committedStart = jdnFromValueString(checkIn);
+  const committedEnd = jdnFromValueString(checkOut);
+  const [draftStart, setDraftStart] = useState<number | null>(committedStart);
+  const [draftEnd, setDraftEnd] = useState<number | null>(committedEnd);
+  const [anchorJdn, setAnchorJdn] = useState(() => committedStart ?? todayJdn());
+  const rootRef = useOutsideClose(open, setOpen);
   const panelId = useId();
   const error = checkInError || checkOutError;
 
   useEffect(() => {
-    setDraftIn(checkIn);
-    setDraftOut(checkOut);
-  }, [checkIn, checkOut]);
-
-  useEffect(() => {
-    function onPointerDown(event: MouseEvent) {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
+    if (open) {
+      setDraftStart(committedStart);
+      setDraftEnd(committedEnd);
+      setAnchorJdn(committedStart ?? todayJdn());
     }
-    document.addEventListener("mousedown", onPointerDown);
-    return () => document.removeEventListener("mousedown", onPointerDown);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
-  const summary = checkIn && checkOut
-    ? `${checkIn} - ${checkOut}`
-    : checkIn
-      ? `${checkIn} - انتخاب خروج`
-      : "تاریخ ورود - خروج";
+  function handleDayClick(jdn: number) {
+    if (draftStart === null || draftEnd !== null || jdn <= draftStart) {
+      setDraftStart(jdn);
+      setDraftEnd(null);
+      return;
+    }
+    setDraftEnd(jdn);
+    onChange(valueStringFromJdn(draftStart), valueStringFromJdn(jdn));
+    setOpen(false);
+  }
+
+  const summary =
+    committedStart !== null && committedEnd !== null
+      ? `${formatFullLabel(committedStart)} - ${formatFullLabel(committedEnd)}`
+      : committedStart !== null
+        ? `${formatFullLabel(committedStart)} - انتخاب خروج`
+        : "تاریخ ورود - خروج";
 
   return (
-    <div
-      ref={rootRef}
-      className={cn("relative min-w-0 flex-1 overflow-visible", open && "z-50")}
-    >
+    <div ref={rootRef} className={cn("relative min-w-0 flex-1 overflow-visible", open && "z-50")}>
       <button
         type="button"
         disabled={disabled}
@@ -197,74 +195,32 @@ export function DateRangePicker({
           error && "bg-red-50/60",
         )}
       >
-        <CalendarRange
-          className="h-4 w-4 shrink-0 text-moscowa-purple"
-          aria-hidden
-        />
-        <span className="truncate text-[15px] font-semibold text-moscowa-text">
-          {summary}
-        </span>
+        <CalendarRange className="h-4 w-4 shrink-0 text-moscowa-purple" aria-hidden />
+        <span className="truncate text-[15px] font-semibold text-moscowa-text">{summary}</span>
       </button>
 
-      {error ? (
-        <p className="absolute bottom-1 right-4 text-[11px] text-red-600">
-          {error}
-        </p>
-      ) : null}
+      {error ? <p className="absolute bottom-1 right-4 text-[11px] text-red-600">{error}</p> : null}
 
       {open ? (
-        <div
-          id={panelId}
-          role="dialog"
-          aria-label={`${checkInLabel} / ${checkOutLabel}`}
-          className="absolute inset-x-0 top-[calc(100%-6px)] z-50 rounded-2xl border border-moscowa-border bg-white p-4 shadow-search"
-        >
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-2 block text-xs text-moscowa-text-secondary">
-                {checkInLabel}
-              </label>
-              <input
-                value={draftIn}
-                onChange={(e) => setDraftIn(e.target.value)}
-                placeholder="۱۴۰۵/۰۳/۱۰"
-                className="h-11 w-full rounded-xl border border-moscowa-border px-3 text-sm outline-none focus:border-moscowa-purple"
-                dir="ltr"
-              />
-            </div>
-            <div>
-              <label className="mb-2 block text-xs text-moscowa-text-secondary">
-                {checkOutLabel}
-              </label>
-              <input
-                value={draftOut}
-                onChange={(e) => setDraftOut(e.target.value)}
-                placeholder="۱۴۰۵/۰۳/۱۵"
-                className="h-11 w-full rounded-xl border border-moscowa-border px-3 text-sm outline-none focus:border-moscowa-purple"
-                dir="ltr"
-              />
-            </div>
-          </div>
-          <div className="mt-3 flex gap-2">
-            <button
-              type="button"
-              className="h-10 flex-1 rounded-xl bg-moscowa-purple text-sm font-semibold text-white transition-colors hover:bg-moscowa-purple-dark"
-              onClick={() => {
-                onChange(draftIn.trim(), draftOut.trim());
-                setOpen(false);
-              }}
-            >
-              تأیید
-            </button>
-            <button
-              type="button"
-              className="h-10 flex-1 rounded-xl border border-moscowa-border text-sm text-moscowa-text-secondary"
-              onClick={() => setOpen(false)}
-            >
-              انصراف
-            </button>
-          </div>
-        </div>
+        <CalendarPopover
+          panelId={panelId}
+          ariaLabel={`${checkInLabel} / ${checkOutLabel}`}
+          mode="range"
+          system={system}
+          onSystemChange={setSystem}
+          anchorJdn={anchorJdn}
+          onAnchorChange={setAnchorJdn}
+          startJdn={draftStart}
+          endJdn={draftEnd}
+          minJdn={todayJdn()}
+          monthsToShow={2}
+          quickNights={quickNights}
+          onDayClick={handleDayClick}
+          onClear={() => {
+            setDraftStart(null);
+            setDraftEnd(null);
+          }}
+        />
       ) : null}
     </div>
   );
