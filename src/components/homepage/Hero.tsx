@@ -11,39 +11,34 @@ const slides = [
     alt: "کلیسای جامع سنت باسیل در میدان سرخ مسکو",
     objectPosition: "object-[50%_38%] sm:object-[50%_35%]",
     ken: "motion-safe:animate-hero-ken",
-    caption: "مسکو را از نزدیک کشف کنید",
   },
   {
-    id: "wing",
-    src: "/images/hero/wing-sunset.jpg",
-    alt: "بال هواپیما بالای ابرها در غروب",
-    objectPosition: "object-[72%_45%] sm:object-[68%_42%]",
+    id: "embankment",
+    src: "/images/hero/moscow-river-embankment.jpg",
+    alt: "غروب آفتاب در کرانه رودخانه مسکو با کلیسا و ساختمان‌های تاریخی",
+    objectPosition: "object-[50%_40%] sm:object-[50%_36%]",
     ken: "motion-safe:animate-hero-ken",
-    caption: "پرواز به افق‌های تازه",
   },
   {
-    id: "jet",
-    src: "/images/hero/jet-islands.jpg",
-    alt: "هواپیما بر فراز جزایر استوایی در غروب",
-    objectPosition: "object-[55%_40%]",
+    id: "kul-sharif",
+    src: "/images/hero/kul-sharif-mosque.jpg",
+    alt: "مسجد قول شریف با مناره‌های سفید و گنبد فیروزه‌ای",
+    objectPosition: "object-[50%_38%]",
     ken: "motion-safe:animate-hero-ken-alt",
-    caption: "مقصد بعدی، فقط یک جستجو فاصله دارد",
   },
   {
-    id: "villa",
-    src: "/images/hero/villa-terrace.jpg",
-    alt: "تراس لوکس مشرف به دریا در غروب آفتاب",
-    objectPosition: "object-[62%_48%] sm:object-[58%_45%]",
+    id: "historical-museum",
+    src: "/images/hero/historical-museum-facade.jpg",
+    alt: "نمای آجر قرمز موزه تاریخی نزدیک میدان سرخ",
+    objectPosition: "object-[50%_45%]",
     ken: "motion-safe:animate-hero-ken-pan",
-    caption: "اقامت‌هایی که خاطره می‌سازند",
   },
   {
-    id: "coast",
-    src: "/images/mood/coastal-resort.jpg",
-    alt: "ریزورت ساحلی لوکس در غروب",
-    objectPosition: "object-[40%_45%] sm:object-[35%_42%]",
+    id: "christ-saviour",
+    src: "/images/hero/christ-saviour-cathedral.jpg",
+    alt: "کلیسای جامع مسیح ناجی با گنبدهای طلایی در انتهای خیابان",
+    objectPosition: "object-[45%_45%] sm:object-[40%_42%]",
     ken: "motion-safe:animate-hero-ken-alt",
-    caption: "از ساحل تا شهر؛ همه در یک پلتفرم",
   },
 ] as const;
 
@@ -116,29 +111,14 @@ export function Hero() {
             MOSCOWA
           </p>
 
-          <h1 className="font-extrabold leading-[1.15] tracking-tight text-white drop-shadow-[0_4px_28px_rgba(12,8,24,0.45)] motion-safe:animate-fade-up motion-safe:[animation-delay:80ms]">
-            <span className="block text-[40px] sm:text-[56px] lg:text-[68px]">
-              مسکوا
+          <h1 className="font-extrabold leading-[1.12] tracking-tight text-white drop-shadow-[0_4px_28px_rgba(12,8,24,0.45)] motion-safe:animate-fade-up motion-safe:[animation-delay:80ms]">
+            <span className="block text-[30px] sm:text-[42px] lg:text-[50px]">
+              رزرو هتل در
             </span>
-            <span className="mt-2 block max-w-xl text-[22px] font-bold text-white/95 sm:mt-3 sm:text-[30px] lg:text-[34px]">
-              سفر را هوشمندانه تجربه کنید
+            <span className="relative mt-1 inline-block bg-[linear-gradient(90deg,#ff8c28_0%,#ffcf8a_45%,#ff8c28_100%)] bg-clip-text text-[34px] text-transparent sm:text-[48px] lg:text-[58px]">
+              مسکو، سن‌پترزبورگ، سوچی
             </span>
           </h1>
-
-          <p className="mt-4 max-w-md text-[15px] leading-8 text-white/90 motion-safe:animate-fade-up motion-safe:[animation-delay:160ms] sm:mt-5 sm:text-[17px]">
-            پرواز، هتل و تور — با تصاویر زنده مقصد و جستجوی شفاف قیمت
-          </p>
-
-          <p
-            key={slides[active].id}
-            className="mt-6 inline-flex items-center gap-2 text-[13px] text-white/80 motion-safe:animate-fade-up sm:text-[14px]"
-          >
-            <span
-              className="h-px w-8 bg-gradient-to-l from-moscowa-orange to-transparent"
-              aria-hidden
-            />
-            {slides[active].caption}
-          </p>
         </div>
 
         <div className="flex items-center gap-3 motion-safe:animate-fade-up motion-safe:[animation-delay:240ms]">
@@ -149,7 +129,7 @@ export function Hero() {
                 type="button"
                 role="tab"
                 aria-selected={index === active}
-                aria-label={`اسلاید ${index + 1}: ${slide.caption}`}
+                aria-label={`اسلاید ${index + 1}`}
                 onClick={() => setActive(index)}
                 className={cn(
                   "relative h-1.5 overflow-hidden rounded-full transition-all duration-500",
