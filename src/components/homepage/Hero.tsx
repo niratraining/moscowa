@@ -69,7 +69,7 @@ export function Hero() {
 
   return (
     <section
-      className="relative isolate h-[300px] overflow-hidden sm:h-[340px] lg:h-[380px]"
+      className="relative isolate h-[340px] overflow-hidden sm:h-[380px] lg:h-[430px]"
       aria-label="معرفی مسکوا"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -175,6 +175,17 @@ export function Hero() {
       ) : null}
 
       <div className="container-page relative z-10 flex h-full flex-col justify-end pb-6 pt-10 sm:pb-8 sm:pt-12 lg:pb-10 lg:pt-14">
+        <div className="mb-5 motion-safe:animate-fade-up motion-safe:[animation-delay:120ms] sm:mb-6 lg:mb-7">
+          <p className="text-[11px] font-medium tracking-[0.3em] text-white/65 sm:text-[12px]">
+            کالکشن روسیه
+          </p>
+          <h1 className="mt-2 text-[26px] font-bold leading-[1.25] text-white sm:text-[32px] lg:text-[38px]">
+            رزرو هتل در مسکو
+            <span className="mx-2 text-white/40">·</span>
+            سن‌پترزبورگ
+          </h1>
+        </div>
+
         <div className="flex items-center gap-3 motion-safe:animate-fade-up motion-safe:[animation-delay:240ms]">
           <div className="flex gap-2" role="tablist" aria-label="اسلایدهای هیرو">
             {slides.map((slide, index) => (
