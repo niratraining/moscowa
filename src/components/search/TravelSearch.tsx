@@ -91,7 +91,7 @@ export function TravelSearch({
         "relative z-30",
         embedded
           ? "mt-0"
-          : "-mt-56 sm:-mt-64 lg:-mt-72",
+          : "-mt-48 sm:-mt-56 lg:-mt-64",
       )}
     >
       <div className={embedded ? undefined : "container-page"}>
