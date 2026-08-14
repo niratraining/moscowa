@@ -3,9 +3,9 @@
 import { Users } from "lucide-react";
 import { DatePicker, DateRangePicker } from "./DatePicker";
 import { DestinationSelector } from "./DestinationSelector";
-import { hotelCities } from "@/data/homepage";
+import { HotelDestinationCombobox } from "./HotelDestinationCombobox";
 import { cn } from "@/lib/utils";
-import type { LocationValue, SearchErrors, TravelSearchState } from "./types";
+import type { SearchErrors, TravelSearchState } from "./types";
 
 interface SimpleRoomGuestsProps {
   rooms: number;
@@ -73,63 +73,11 @@ function FieldShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-interface CitySelectFieldProps {
-  label?: string;
-  value: LocationValue | null;
-  onChange: (value: LocationValue) => void;
-  error?: string;
-}
-
-function CitySelectField({
-  label,
-  value,
-  onChange,
-  error,
-}: CitySelectFieldProps) {
-  return (
-    <div
-      className="flex min-h-[64px] min-w-0 flex-1 flex-col items-center justify-center gap-2 px-4 py-3"
-      aria-label={label}
-    >
-      <div className="flex flex-nowrap items-center justify-center gap-2 overflow-x-auto no-scrollbar">
-        {hotelCities.map((item) => {
-          const selected = value?.code === item.code;
-          return (
-            <button
-              key={item.code}
-              type="button"
-              aria-pressed={selected}
-              onClick={() =>
-                onChange({
-                  code: item.code,
-                  name: item.name,
-                  subtitle: item.subtitle,
-                })
-              }
-              className={cn(
-                "shrink-0 whitespace-nowrap rounded-xl border px-3 py-2 text-[14px] font-medium transition-colors",
-                selected
-                  ? "border-moscowa-purple bg-moscowa-purple/10 text-moscowa-purple"
-                  : "border-moscowa-border bg-white text-moscowa-text-secondary hover:border-moscowa-purple/60 hover:text-moscowa-purple",
-              )}
-            >
-              {item.name}
-            </button>
-          );
-        })}
-      </div>
-      {error ? (
-        <p className="text-[11px] text-red-600">{error}</p>
-      ) : null}
-    </div>
-  );
-}
-
 export function HotelSearchForm({ state, errors, onChange }: FormProps) {
   return (
     <FieldShell>
-      <CitySelectField
-        label="مقصد / هتل"
+      <HotelDestinationCombobox
+        label="مقصد یا نام هتل"
         value={state.destination}
         error={errors.destination}
         onChange={(destination) => onChange({ destination })}

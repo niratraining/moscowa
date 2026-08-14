@@ -104,6 +104,29 @@ export const hotelCities: CityOption[] = [
   { code: "KZN", name: "کازان", subtitle: "کازان، روسیه" },
 ];
 
+export interface HotelDirectoryItem {
+  id: string;
+  name: string;
+  cityCode: string;
+  cityName: string;
+  area?: string;
+  stars?: number;
+}
+
+export const hotelDirectory: HotelDirectoryItem[] = [
+  { id: "mow-ritz", name: "The Ritz-Carlton Moscow", cityCode: "MOW", cityName: "مسکو", area: "میدان سرخ", stars: 5 },
+  { id: "mow-metropol", name: "Hotel Metropol Moscow", cityCode: "MOW", cityName: "مسکو", area: "مرکز شهر", stars: 5 },
+  { id: "mow-national", name: "Hotel National Moscow", cityCode: "MOW", cityName: "مسکو", area: "کرملین", stars: 5 },
+  { id: "mow-izmailovo", name: "Izmailovo Cosmos Hotel", cityCode: "MOW", cityName: "مسکو", area: "ایزمایلوو", stars: 4 },
+  { id: "led-astoria", name: "Hotel Astoria", cityCode: "LED", cityName: "سن پترزبورگ", area: "میدان سنت آیزاک", stars: 5 },
+  { id: "led-kempinski", name: "Kempinski Hotel Moika 22", cityCode: "LED", cityName: "سن پترزبورگ", area: "نوسکی پراسپکت", stars: 5 },
+  { id: "led-corinthia", name: "Corinthia Hotel St. Petersburg", cityCode: "LED", cityName: "سن پترزبورگ", area: "نوسکی پراسپکت", stars: 5 },
+  { id: "aer-radisson", name: "Radisson Collection Paradise Resort & Spa", cityCode: "AER", cityName: "سوچی", area: "ساحل", stars: 5 },
+  { id: "aer-rodina", name: "Rodina Grand Hotel & Spa", cityCode: "AER", cityName: "سوچی", area: "مرکز شهر", stars: 5 },
+  { id: "kzn-mirage", name: "Mirage Hotel Kazan", cityCode: "KZN", cityName: "کازان", area: "مرکز شهر", stars: 4 },
+  { id: "kzn-ramada", name: "Ramada by Wyndham Kazan City Center", cityCode: "KZN", cityName: "کازان", area: "مرکز شهر", stars: 4 },
+];
+
 export const quickServices: QuickService[] = [
   {
     id: "club",
