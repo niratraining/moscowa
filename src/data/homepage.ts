@@ -101,6 +101,7 @@ export const hotelCities: CityOption[] = [
   { code: "MOW", name: "مسکو", subtitle: "مسکو، روسیه" },
   { code: "LED", name: "سن پترزبورگ", subtitle: "سن پترزبورگ، روسیه" },
   { code: "AER", name: "سوچی", subtitle: "سوچی، روسیه" },
+  { code: "KZN", name: "کازان", subtitle: "کازان، روسیه" },
 ];
 
 export const quickServices: QuickService[] = [
