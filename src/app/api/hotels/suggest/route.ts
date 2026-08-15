@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { multicomplete } from "@/lib/ostrovok/client";
 import { getOstrovokConfig } from "@/lib/ostrovok/config";
 
-export const runtime = "edge";
-
 export async function GET(req: NextRequest) {
   const config = getOstrovokConfig();
   const query = req.nextUrl.searchParams.get("q")?.trim() ?? "";
