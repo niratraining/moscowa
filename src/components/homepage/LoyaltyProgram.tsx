@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { loyaltyPerks, loyaltyTiers } from "@/data/homepage";
 import { Button } from "@/components/ui/Button";
-import { IconBox } from "@/components/ui/IconBox";
 import { cn } from "@/lib/utils";
 
 const perkIcons = {
@@ -75,46 +74,41 @@ export function LoyaltyProgram() {
         })}
       </div>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-[1.1fr_1fr] lg:gap-5">
-        <div className="relative overflow-hidden rounded-[20px] bg-[linear-gradient(135deg,#4f2f7c_0%,#6b4a96_60%,#f84209_150%)] p-6 text-white sm:p-7">
-          <p className="text-[13px] text-white/75">شروع رایگان</p>
-          <p className="mt-2 max-w-sm text-[19px] font-bold leading-8 sm:text-[21px]">
-            با ثبت‌نام، سطح ۱ باشگاه مسکوا فعال می‌شود
-          </p>
-          <p className="mt-2 max-w-sm text-[13.5px] leading-7 text-white/85">
-            همین امروز عضو شوید و ۵٪ تخفیف روی اولین رزرو هتل خود در روسیه بگیرید.
-          </p>
+      <div className="mt-4 space-y-3">
+        <div className="flex flex-col items-start gap-3 rounded-2xl bg-[linear-gradient(135deg,#4f2f7c_0%,#6b4a96_60%,#f84209_150%)] px-5 py-4 text-white sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div>
+            <p className="text-[14px] font-bold sm:text-[15.5px]">
+              با ثبت‌نام، سطح ۱ باشگاه مسکوا فعال می‌شود
+            </p>
+            <p className="mt-1 text-[12px] text-white/80">
+              ۵٪ تخفیف روی اولین رزرو هتل خود در روسیه بگیرید
+            </p>
+          </div>
           <Button
             href="/auth/register"
             variant="white"
-            size="md"
-            className="mt-5"
+            size="sm"
+            className="w-full shrink-0 sm:w-auto"
           >
-            ثبت‌نام و فعال‌سازی تخفیف
+            ثبت‌نام رایگان
           </Button>
         </div>
 
-        <div className="rounded-[20px] border border-moscowa-border bg-white p-5 sm:p-6">
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {loyaltyPerks.map((perk) => {
-              const Icon = perkIcons[perk.icon];
-              return (
-                <li key={perk.id} className="flex items-start gap-3">
-                  <IconBox size="sm" className="shrink-0">
-                    <Icon className="h-5 w-5" strokeWidth={1.75} />
-                  </IconBox>
-                  <div>
-                    <p className="text-[13.5px] font-semibold text-moscowa-text">
-                      {perk.title}
-                    </p>
-                    <p className="mt-0.5 text-[12px] leading-6 text-moscowa-text-secondary">
-                      {perk.description}
-                    </p>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+        <div className="flex gap-2.5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {loyaltyPerks.map((perk) => {
+            const Icon = perkIcons[perk.icon];
+            return (
+              <div
+                key={perk.id}
+                className="flex shrink-0 items-center gap-2 rounded-full border border-moscowa-border bg-white px-3.5 py-2"
+              >
+                <Icon className="h-4 w-4 text-moscowa-purple" strokeWidth={1.75} />
+                <span className="whitespace-nowrap text-[12.5px] font-medium text-moscowa-text">
+                  {perk.title}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
