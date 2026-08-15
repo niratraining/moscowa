@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getHotelInfo, retrieveHotelPage } from "@/lib/ostrovok/client";
 import { getOstrovokConfig } from "@/lib/ostrovok/config";
 
-export const runtime = "edge";
-
 function todayPlus(days: number) {
   const d = new Date();
   d.setDate(d.getDate() + days);
