@@ -29,6 +29,9 @@ jobs:
             exit 0
           fi
 
+          # حذف پوشه‌های اضافه‌ای که ممکن است از آپلودهای اشتباه قبلی باقی مانده باشند
+          rm -rf moscowa-main moscowa-updated
+
           for zipfile in "${zips[@]}"; do
             echo "در حال پردازش: $zipfile"
             tmpdir=$(mktemp -d)
