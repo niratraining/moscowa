@@ -58,9 +58,9 @@ export const defaultSearchState: TravelSearchState = {
     subtitle: "تهران (همه فرودگاه‌ها)",
   },
   destination: {
-    code: "MHD",
-    name: "مشهد",
-    subtitle: "مشهد",
+    code: "MOW",
+    name: "مسکو",
+    subtitle: "مسکو، روسیه",
   },
   departureDate: "۱۴۰۵/۰۳/۱۰",
   returnDate: "۱۴۰۵/۰۳/۱۵",
