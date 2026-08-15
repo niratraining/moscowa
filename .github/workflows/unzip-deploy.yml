@@ -59,10 +59,26 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/niratraining/moscowa.git
+
           git add -A
           if git diff --cached --quiet; then
             echo "تغییری برای کامیت وجود ندارد."
-          else
-            git commit -m "chore: auto-extract uploaded zip [skip ci]"
-            git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/niratraining/moscowa.git
+            exit 0
           fi
+
+          git commit -m "chore: auto-extract uploaded zip [skip ci]"
+
+          attempt=1
+          max_attempts=5
+          until git push origin HEAD:main; do
+            if [ "$attempt" -ge "$max_attempts" ]; then
+              echo "push بعد از $max_attempts تلاش ناموفق بود."
+              exit 1
+            fi
+            echo "push رد شد، در حال pull/rebase و تلاش دوباره ($attempt/$max_attempts)..."
+            git fetch origin main
+            git rebase origin/main
+            attempt=$((attempt + 1))
+            sleep 3
+          done
