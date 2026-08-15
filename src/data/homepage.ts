@@ -324,6 +324,66 @@ export const loyaltyPerks: LoyaltyPerk[] = [
   },
 ];
 
+export interface FeaturedHotel {
+  id: string;
+  name: string;
+  city: string;
+  stars: number;
+  rating: number;
+  ratingLabel: string;
+  reviewCount: number;
+  amenities: ("wifi" | "breakfast" | "parking" | "gym" | "pool")[];
+  image: string;
+  originalPrice: number;
+  memberPrice: number;
+  href: string;
+}
+
+export const featuredHotels: FeaturedHotel[] = [
+  {
+    id: "bolshoy-moscow",
+    name: "هتل بولشوی مسکو",
+    city: "مسکو، روسیه",
+    stars: 5,
+    rating: 9.1,
+    ratingLabel: "عالی",
+    reviewCount: 842,
+    amenities: ["wifi", "breakfast", "gym"],
+    image: "/images/hero/moscow-river-embankment.jpg",
+    originalPrice: 4900000,
+    memberPrice: 4200000,
+    href: "/hotels/bolshoy-moscow",
+  },
+  {
+    id: "neva-premium-petersburg",
+    name: "هتل نوا پرمیوم",
+    city: "سن‌پترزبورگ، روسیه",
+    stars: 4,
+    rating: 8.8,
+    ratingLabel: "خیلی خوب",
+    reviewCount: 613,
+    amenities: ["wifi", "parking", "breakfast"],
+    image: "/images/hero/villa-terrace.jpg",
+    originalPrice: 4300000,
+    memberPrice: 3850000,
+    href: "/hotels/neva-premium-petersburg",
+  },
+  {
+    id: "kazan-palace",
+    name: "هتل کازان پالاس",
+    city: "کازان، روسیه",
+    stars: 4,
+    rating: 8.6,
+    ratingLabel: "خیلی خوب",
+    reviewCount: 401,
+    amenities: ["wifi", "pool", "parking"],
+    image: "/images/hero/christ-saviour-cathedral.jpg",
+    originalPrice: 3600000,
+    memberPrice: 3100000,
+    href: "/hotels/kazan-palace",
+  },
+];
+
 export const trustPoints: TrustPoint[] = [
   {
     id: "refund",
