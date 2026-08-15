@@ -85,6 +85,56 @@ export const mainNav: NavItem[] = [
   { id: "guide", label: "راهنما", href: "/guide" },
 ];
 
+export interface FooterLinkGroup {
+  id: string;
+  title: string;
+  links: NavItem[];
+}
+
+export const footerLinkGroups: FooterLinkGroup[] = [
+  {
+    id: "company",
+    title: "مسکوا",
+    links: [
+      { id: "about", label: "درباره ما", href: "/about" },
+      { id: "careers", label: "فرصت‌های شغلی", href: "/careers" },
+      { id: "guide", label: "راهنمای سفر", href: "/guide" },
+      { id: "support", label: "تماس با ما", href: "/support" },
+    ],
+  },
+  {
+    id: "services",
+    title: "خدمات",
+    links: [
+      { id: "flights", label: "بلیط پرواز", href: "/flights" },
+      { id: "hotels", label: "رزرو هتل", href: "/hotels" },
+      { id: "tours", label: "تور مسافرتی", href: "/tours" },
+      { id: "trains", label: "بلیط قطار", href: "/trains" },
+      { id: "buses", label: "بلیط اتوبوس", href: "/buses" },
+    ],
+  },
+  {
+    id: "support",
+    title: "پشتیبانی",
+    links: [
+      { id: "faq", label: "سوالات متداول", href: "/faq" },
+      { id: "refund", label: "قوانین استرداد", href: "/refund" },
+      { id: "insurance", label: "بیمه مسافرتی", href: "/insurance" },
+      { id: "installment", label: "خرید اقساطی", href: "/installment" },
+    ],
+  },
+  {
+    id: "business",
+    title: "همکاری با ما",
+    links: [
+      { id: "partners", label: "معرفی همکاری", href: "/partners" },
+      { id: "agency", label: "ثبت‌نام آژانس همکار", href: "/partners/agencies" },
+      { id: "corporate", label: "سفر سازمانی", href: "/corporate" },
+      { id: "club", label: "باشگاه مشتریان", href: "/club" },
+    ],
+  },
+];
+
 export const cities: CityOption[] = [
   { code: "THR", name: "تهران", subtitle: "تهران (همه فرودگاه‌ها)" },
   { code: "MHD", name: "مشهد", subtitle: "مشهد" },

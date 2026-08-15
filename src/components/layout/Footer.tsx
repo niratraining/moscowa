@@ -1,31 +1,22 @@
-"use client";
-
-import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import {
   Apple,
+  BadgeCheck,
+  Building2,
   Instagram,
   Landmark,
   Linkedin,
   Mail,
+  Percent,
   Phone,
   PlayCircle,
   Send,
   Twitter,
 } from "lucide-react";
-import { siteConfig } from "@/data/homepage";
+import { footerLinkGroups, siteConfig } from "@/data/homepage";
 import { Button } from "@/components/ui/Button";
 
 export function Footer() {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!email) return;
-    setSubmitted(true);
-  }
-
   return (
     <footer className="border-t border-moscowa-border bg-moscowa-bg-secondary">
       <div className="container-page section-spacing !pb-8 !pt-14">
@@ -61,35 +52,54 @@ export function Footer() {
           </div>
 
           <div className="w-full rounded-[20px] border border-moscowa-border bg-white p-5 sm:p-6 lg:w-[380px] lg:shrink-0">
-            <p className="text-[15px] font-bold text-moscowa-text">
-              تخفیف‌های ویژه روسیه را اول از همه ببینید
-            </p>
-            <p className="mt-1 text-[12.5px] leading-6 text-moscowa-text-secondary">
-              عضو خبرنامه مسکوا شوید و پیشنهادهای هتل مستقیم در ایمیل شما.
-            </p>
-            {submitted ? (
-              <p className="mt-4 rounded-xl bg-[color-mix(in_srgb,var(--color-moscowa-purple)_8%,white)] px-4 py-3 text-[13px] font-medium text-moscowa-purple">
-                ثبت شد! به‌زودی پیشنهادهای ویژه برایتان ارسال می‌شود.
+            <div className="flex items-center gap-2.5">
+              <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[color-mix(in_srgb,var(--color-moscowa-purple)_8%,white)] text-moscowa-purple">
+                <Building2 className="h-4 w-4" />
+              </span>
+              <p className="text-[15px] font-bold text-moscowa-text">
+                پنل آژانس‌های همکار
               </p>
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="mt-4 flex flex-col gap-2 sm:flex-row"
-              >
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="ایمیل شما"
-                  className="h-11 w-full flex-1 rounded-xl border border-moscowa-border bg-white px-4 text-[13.5px] text-moscowa-text placeholder:text-moscowa-text-muted focus:border-moscowa-purple focus:outline-none"
-                />
-                <Button type="submit" size="md" className="shrink-0">
-                  عضویت
-                </Button>
-              </form>
-            )}
+            </div>
+            <p className="mt-3 text-[12.5px] leading-6 text-moscowa-text-secondary">
+              آژانس مسافرتی خود را ثبت کنید، با برند اختصاصی واچر صادر کنید و
+              از هر رزرو کمیسیون همکاری دریافت کنید.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-moscowa-bg-secondary px-2.5 py-1.5 text-[11.5px] font-medium text-moscowa-text-secondary">
+                <BadgeCheck className="h-3.5 w-3.5 text-moscowa-purple" />
+                واچر با لوگوی شما
+              </span>
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-moscowa-bg-secondary px-2.5 py-1.5 text-[11.5px] font-medium text-moscowa-text-secondary">
+                <Percent className="h-3.5 w-3.5 text-moscowa-purple" />
+                کمیسیون هر رزرو
+              </span>
+            </div>
+            <Button href="/partners/agencies" size="md" className="mt-4 w-full">
+              ثبت‌نام آژانس همکار
+            </Button>
           </div>
+        </div>
+
+        <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-9 border-t border-moscowa-border pt-10 sm:grid-cols-4">
+          {footerLinkGroups.map((group) => (
+            <div key={group.id}>
+              <p className="text-[13px] font-bold text-moscowa-text">
+                {group.title}
+              </p>
+              <ul className="mt-3.5 space-y-2.5">
+                {group.links.map((link) => (
+                  <li key={link.id}>
+                    <Link
+                      href={link.href}
+                      className="text-[13px] text-moscowa-text-secondary transition-colors hover:text-moscowa-purple"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         <div className="mt-8 flex flex-col gap-4 border-t border-moscowa-border pt-6 sm:flex-row sm:items-center sm:justify-between">

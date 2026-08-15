@@ -1,1 +1,0 @@
-export { TrainSearchForm } from "./HotelSearchForm";
