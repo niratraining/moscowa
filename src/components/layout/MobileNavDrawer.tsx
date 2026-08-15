@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Headphones, X } from "lucide-react";
 import { mainNav, siteConfig } from "@/data/homepage";
 import { cn } from "@/lib/utils";
@@ -54,7 +55,7 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
 
   if (!mounted) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[100]" role="dialog" aria-modal="true" aria-label="منوی اصلی">
       {/* Backdrop */}
       <div
@@ -172,6 +173,7 @@ export function MobileNavDrawer({ open, onClose }: MobileNavDrawerProps) {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
