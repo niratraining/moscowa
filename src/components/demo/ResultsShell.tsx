@@ -16,6 +16,8 @@ interface ResultsShellProps {
   sortOptions: { id: string; label: string }[];
   children: ReactNode;
   defaultSort?: string;
+  /** Small label above the title. Defaults to the demo-data notice. */
+  eyebrow?: string;
 }
 
 export function ResultsShell({
@@ -25,6 +27,7 @@ export function ResultsShell({
   sortOptions,
   children,
   defaultSort,
+  eyebrow = "نمایش دمو · داده نمونه",
 }: ResultsShellProps) {
   const [sort, setSort] = useState(defaultSort ?? sortOptions[0]?.id);
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>(
@@ -45,7 +48,7 @@ export function ResultsShell({
     <section className="container-page section-spacing !pt-8">
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-[13px] text-moscowa-text-muted">نمایش دمو · داده نمونه</p>
+          <p className="text-[13px] text-moscowa-text-muted">{eyebrow}</p>
           <h2 className="mt-1 text-[22px] font-bold text-moscowa-text sm:text-[26px]">
             {title}
           </h2>

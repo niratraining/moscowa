@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { HotelDetailDemo } from "@/components/demo/DetailPages";
+import { LiveHotelDetail } from "@/components/hotels/LiveHotelDetail";
 import { demoHotels, getDemoHotel } from "@/data/demo";
 
 export function generateStaticParams() {
@@ -14,7 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const hotel = getDemoHotel(id);
-  if (!hotel) return { title: "هتل یافت نشد" };
+  if (!hotel) return { title: "هتل" };
   return {
     title: hotel.name,
     description: hotel.description,
@@ -28,6 +29,14 @@ export default async function HotelDetailPage({
 }) {
   const { id } = await params;
   const hotel = getDemoHotel(id);
-  if (!hotel) notFound();
-  return <HotelDetailDemo hotel={hotel} />;
+  if (hotel) return <HotelDetailDemo hotel={hotel} />;
+
+  // Not a demo id — try it as a live Ostrovok numeric hotel id (hid).
+  const hid = Number(id);
+  if (Number.isFinite(hid)) {
+    const live = await LiveHotelDetail({ hid });
+    if (live) return live;
+  }
+
+  notFound();
 }
