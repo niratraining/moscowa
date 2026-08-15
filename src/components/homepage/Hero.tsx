@@ -18,7 +18,7 @@ export function Hero() {
 
   return (
     <section
-      className="relative isolate h-[300px] overflow-hidden bg-moscowa-purple sm:h-[330px] lg:h-[360px]"
+      className="relative isolate h-[300px] overflow-hidden bg-moscowa-orange sm:h-[330px] lg:h-[360px]"
       aria-label="معرفی مسکوا"
     >
       {/* Hamburger menu overlay */}
