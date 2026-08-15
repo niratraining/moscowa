@@ -13,6 +13,7 @@ import {
 } from "./HotelSearchForm";
 import { FlightSearchForm } from "./FlightSearchForm";
 import { SearchTabs } from "./SearchTabs";
+import { saveRecentSearch } from "@/lib/recentSearch";
 import {
   buildSearchUrl,
   defaultSearchState,
@@ -79,6 +80,7 @@ export function TravelSearch({
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
+    saveRecentSearch(state);
     startTransition(() => {
       router.push(buildSearchUrl(state));
     });
