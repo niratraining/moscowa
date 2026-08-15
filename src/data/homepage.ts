@@ -34,9 +34,9 @@ export interface PopularDestination {
 
 export interface TrustMetric {
   id: string;
-  value: string;
-  label: string;
-  icon: "experience" | "hotels" | "airlines" | "price" | "support" | "customers";
+  title: string;
+  description: string;
+  icon: "direct" | "voucher" | "price" | "support";
 }
 
 export interface TrustPoint {
@@ -267,40 +267,28 @@ export const popularDestinations: PopularDestination[] = [
  */
 export const trustMetrics: TrustMetric[] = [
   {
-    id: "experience",
-    value: "۱۴+",
-    label: "سال تجربه در صنعت سفر",
-    icon: "experience",
+    id: "direct",
+    title: "رزرو مستقیم",
+    description: "ارتباط مستقیم با هتل‌های روسیه، بدون واسطه‌ی اضافه",
+    icon: "direct",
   },
   {
-    id: "hotels",
-    value: "+۱ میلیون",
-    label: "هتل در سراسر دنیا",
-    icon: "hotels",
-  },
-  {
-    id: "airlines",
-    value: "+۷۰۰",
-    label: "هواپیمای داخلی و خارجی",
-    icon: "airlines",
+    id: "voucher",
+    title: "واچر آنی",
+    description: "بلافاصله بعد از رزرو، واچر معتبر هتل صادر می‌شود",
+    icon: "voucher",
   },
   {
     id: "price",
-    value: "بهترین قیمت",
-    label: "مقایسه سریع و شفاف",
+    title: "نرخ رقابتی",
+    description: "چون مستقیم رزرو می‌کنیم، قیمت واقعی‌تری می‌بینید",
     icon: "price",
   },
   {
     id: "support",
-    value: "۲۴/۷",
-    label: "پشتیبانی آنلاین",
+    title: "پشتیبانی محلی",
+    description: "تیم ما در مسکو و سن‌پترزبورگ همراه شماست",
     icon: "support",
-  },
-  {
-    id: "customers",
-    value: "+۱ میلیون",
-    label: "مشتری راضی",
-    icon: "customers",
   },
 ];
 
