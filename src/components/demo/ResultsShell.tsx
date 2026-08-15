@@ -1,6 +1,8 @@
 "use client";
 
 import { ReactNode, useState } from "react";
+import { SlidersHorizontal } from "lucide-react";
+import { FieldOverlay } from "@/components/search/FieldOverlay";
 import { cn } from "@/lib/utils";
 
 export interface FilterGroup {
@@ -20,6 +22,35 @@ interface ResultsShellProps {
   eyebrow?: string;
 }
 
+function FilterRow({
+  label,
+  count,
+  checked,
+  onChange,
+}: {
+  label: string;
+  count?: number;
+  checked: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <label className="flex min-h-11 cursor-pointer items-center justify-between gap-3 border-b border-moscowa-border/60 py-3 text-[14px] text-moscowa-text last:border-0">
+      <span>
+        {label}
+        {typeof count === "number" && (
+          <span className="text-moscowa-text-muted"> ({count.toLocaleString("fa-IR")})</span>
+        )}
+      </span>
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className="h-5 w-5 shrink-0 rounded border-moscowa-border text-moscowa-purple focus:ring-moscowa-purple"
+      />
+    </label>
+  );
+}
+
 export function ResultsShell({
   title,
   resultCount,
@@ -33,6 +64,12 @@ export function ResultsShell({
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>(
     {},
   );
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const activeCount = Object.values(activeFilters).reduce(
+    (sum, ids) => sum + ids.length,
+    0,
+  );
 
   function toggleFilter(groupId: string, optionId: string) {
     setActiveFilters((prev) => {
@@ -43,6 +80,29 @@ export function ResultsShell({
       return { ...prev, [groupId]: next };
     });
   }
+
+  const filterGroupList = (
+    <div className="space-y-5">
+      {filterGroups.map((group) => (
+        <div key={group.id}>
+          <p className="mb-1 text-[13px] font-semibold text-moscowa-text">
+            {group.title}
+          </p>
+          <div>
+            {group.options.map((option) => (
+              <FilterRow
+                key={option.id}
+                label={option.label}
+                count={option.count}
+                checked={(activeFilters[group.id] ?? []).includes(option.id)}
+                onChange={() => toggleFilter(group.id, option.id)}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 
   return (
     <section className="container-page section-spacing !pt-8">
@@ -56,7 +116,22 @@ export function ResultsShell({
             {resultCount.toLocaleString("fa-IR")} نتیجه پیدا شد
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {filterGroups.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setFiltersOpen(true)}
+              className="inline-flex h-10 items-center gap-1.5 rounded-full border border-moscowa-border px-4 text-[13px] font-medium text-moscowa-text transition-colors hover:bg-moscowa-bg-secondary lg:hidden"
+            >
+              <SlidersHorizontal className="h-3.5 w-3.5" />
+              فیلترها
+              {activeCount > 0 && (
+                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-moscowa-purple px-1 text-[11px] font-bold text-white">
+                  {activeCount.toLocaleString("fa-IR")}
+                </span>
+              )}
+            </button>
+          )}
           {sortOptions.map((option) => (
             <button
               key={option.id}
@@ -76,48 +151,43 @@ export function ResultsShell({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
-        <aside className="h-fit rounded-[20px] border border-moscowa-border bg-white p-4 lg:sticky lg:top-28">
-          <p className="mb-4 text-[15px] font-bold text-moscowa-text">فیلترها</p>
-          <div className="space-y-5">
-            {filterGroups.map((group) => (
-              <div key={group.id}>
-                <p className="mb-2 text-[13px] font-semibold text-moscowa-text">
-                  {group.title}
-                </p>
-                <ul className="space-y-2">
-                  {group.options.map((option) => {
-                    const checked = (activeFilters[group.id] ?? []).includes(
-                      option.id,
-                    );
-                    return (
-                      <li key={option.id}>
-                        <label className="flex cursor-pointer items-center justify-between gap-2 text-[13px] text-moscowa-text-secondary">
-                          <span className="inline-flex items-center gap-2">
-                            <input
-                              type="checkbox"
-                              checked={checked}
-                              onChange={() => toggleFilter(group.id, option.id)}
-                              className="h-4 w-4 rounded border-moscowa-border text-moscowa-purple focus:ring-moscowa-purple"
-                            />
-                            {option.label}
-                          </span>
-                          {typeof option.count === "number" ? (
-                            <span className="text-moscowa-text-muted">
-                              {option.count.toLocaleString("fa-IR")}
-                            </span>
-                          ) : null}
-                        </label>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </aside>
+        {filterGroups.length > 0 && (
+          <aside className="hidden h-fit rounded-[20px] border border-moscowa-border bg-white p-4 lg:sticky lg:top-28 lg:block">
+            <p className="mb-3 text-[15px] font-bold text-moscowa-text">فیلترها</p>
+            {filterGroupList}
+          </aside>
+        )}
 
         <div className="space-y-4">{children}</div>
       </div>
+
+      {filterGroups.length > 0 && (
+        <FieldOverlay
+          open={filtersOpen}
+          onOpenChange={setFiltersOpen}
+          title="فیلتر بر اساس"
+          footer={
+            <div className="flex items-center justify-between gap-3">
+              <button
+                type="button"
+                onClick={() => setActiveFilters({})}
+                className="text-[13px] font-semibold text-moscowa-purple"
+              >
+                بازنشانی
+              </button>
+              <button
+                type="button"
+                onClick={() => setFiltersOpen(false)}
+                className="h-11 flex-1 rounded-xl bg-moscowa-purple px-5 text-[14px] font-bold text-white"
+              >
+                نمایش {resultCount.toLocaleString("fa-IR")} نتیجه
+              </button>
+            </div>
+          }
+        >
+          {filterGroupList}
+        </FieldOverlay>
+      )}
     </section>
   );
 }
