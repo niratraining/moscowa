@@ -2,7 +2,9 @@
 
 import {
   BedDouble,
+  Car,
   Compass,
+  Home,
   Plane,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -12,9 +14,12 @@ const tabs: {
   id: ServiceType;
   label: string;
   icon: typeof Plane;
+  disabled?: boolean;
 }[] = [
   { id: "hotel", label: "هتل", icon: BedDouble },
-  { id: "tour", label: "تور", icon: Compass },
+  { id: "tour", label: "تور", icon: Compass, disabled: true },
+  { id: "transfer" as ServiceType, label: "ترانسفر فرودگاهی", icon: Car, disabled: true },
+  { id: "stay", label: "میزبانی مقصد", icon: Home, disabled: true },
 ];
 
 interface SearchTabsProps {
@@ -31,7 +36,26 @@ export function SearchTabs({ value, onChange }: SearchTabsProps) {
     >
       {tabs.map((tab) => {
         const Icon = tab.icon;
-        const selected = value === tab.id;
+        const selected = !tab.disabled && value === tab.id;
+
+        if (tab.disabled) {
+          return (
+            <div
+              key={tab.id}
+              role="tab"
+              aria-disabled="true"
+              aria-selected={false}
+              className="relative flex min-w-[110px] shrink-0 cursor-not-allowed select-none items-center justify-center gap-2 px-3 text-[14px] font-medium text-moscowa-text-muted/60"
+            >
+              <Icon className="h-[18px] w-[18px]" aria-hidden />
+              <span className="whitespace-nowrap">{tab.label}</span>
+              <span className="rounded-full bg-moscowa-bg-secondary px-1.5 py-0.5 text-[10px] font-medium text-moscowa-text-muted">
+                به‌زودی
+              </span>
+            </div>
+          );
+        }
+
         return (
           <button
             key={tab.id}
