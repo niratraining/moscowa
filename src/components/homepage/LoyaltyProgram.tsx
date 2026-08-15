@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { loyaltyPerks, loyaltyTiers } from "@/data/homepage";
 import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
 import { IconBox } from "@/components/ui/IconBox";
 import { cn } from "@/lib/utils";
 
@@ -37,22 +36,22 @@ export function LoyaltyProgram() {
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
+      <div className="space-y-2 sm:space-y-2.5">
         {loyaltyTiers.map((tier) => {
           const unlocked = tier.status === "unlocked";
           return (
-            <Card
+            <div
               key={tier.id}
               className={cn(
-                "p-4 sm:p-5",
+                "flex items-center gap-3 rounded-2xl border px-3.5 py-2.5 sm:px-4 sm:py-3",
                 unlocked
                   ? "border-moscowa-orange/50 bg-[color-mix(in_srgb,var(--color-moscowa-orange)_5%,white)]"
-                  : "border-moscowa-border",
+                  : "border-moscowa-border bg-white",
               )}
             >
               <span
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold",
+                  "inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11.5px] font-semibold",
                   unlocked
                     ? "bg-moscowa-orange text-white"
                     : "bg-moscowa-bg-secondary text-moscowa-text-muted",
@@ -65,16 +64,13 @@ export function LoyaltyProgram() {
                 )}
                 سطح {tier.level}
               </span>
-              <p className="mt-3 text-[20px] font-bold text-moscowa-purple sm:text-[22px]">
-                {tier.discount}
+              <p className="min-w-0 flex-1 truncate text-[13.5px] sm:text-[14px]">
+                <span className="font-bold text-moscowa-purple">
+                  {tier.discount}
+                </span>
+                <span className="text-moscowa-text-secondary"> — {tier.title}</span>
               </p>
-              <p className="mt-1 text-[14px] font-semibold text-moscowa-text">
-                {tier.title}
-              </p>
-              <p className="mt-1 text-[12.5px] leading-6 text-moscowa-text-secondary">
-                {tier.requirement}
-              </p>
-            </Card>
+            </div>
           );
         })}
       </div>
