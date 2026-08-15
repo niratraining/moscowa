@@ -2,7 +2,7 @@ import { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  tone?: "purple" | "orange" | "neutral" | "sky";
+  tone?: "purple" | "orange" | "neutral" | "sky" | "green";
 }
 
 const tones = {
@@ -10,6 +10,7 @@ const tones = {
   orange: "bg-moscowa-orange text-white",
   neutral: "bg-white/90 text-moscowa-text border border-moscowa-border",
   sky: "bg-[#E8F3FF] text-[#2B6CB0]",
+  green: "bg-moscowa-green text-white",
 };
 
 export function Badge({

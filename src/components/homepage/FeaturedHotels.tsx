@@ -15,7 +15,7 @@ const amenityIcons = {
 export function FeaturedHotels() {
   return (
     <section
-      className="container-page pt-8 pb-12 sm:pt-10 sm:pb-16 lg:pt-12 lg:pb-[88px]"
+      className="container-page pt-4 pb-12 sm:pt-5 sm:pb-16 lg:pt-6 lg:pb-[88px]"
       aria-label="هتل‌های منتخب"
     >
       <p className="mb-4 text-[13px] font-medium text-moscowa-orange sm:mb-5">
@@ -47,6 +47,12 @@ export function FeaturedHotels() {
                     <h3 className="truncate text-[14.5px] font-bold text-moscowa-text sm:text-[16px]">
                       {hotel.name}
                     </h3>
+                    <p
+                      dir="ltr"
+                      className="mt-0.5 truncate text-left text-[11px] text-moscowa-text-muted sm:text-[12px]"
+                    >
+                      {hotel.nameEn}
+                    </p>
                     <p className="mt-0.5 text-[12px] text-moscowa-text-secondary sm:text-[13px]">
                       {hotel.city}
                     </p>
@@ -76,7 +82,11 @@ export function FeaturedHotels() {
               </div>
 
               <div className="flex items-end justify-between gap-2">
-                <span className="inline-flex flex-col items-start rounded-lg bg-moscowa-purple px-2 py-1 leading-none text-white">
+                <span
+                  className={`inline-flex flex-col items-start rounded-lg px-2 py-1 leading-none text-white ${
+                    hotel.rating >= 9 ? "bg-moscowa-green" : "bg-moscowa-purple"
+                  }`}
+                >
                   <span className="text-[12px] font-bold sm:text-[13px]">
                     {hotel.rating.toFixed(1)}
                   </span>

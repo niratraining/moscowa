@@ -266,6 +266,139 @@ export const popularDestinations: PopularDestination[] = [
   },
 ];
 
+export interface TripVibe {
+  id: string;
+  label: string;
+  icon: "landmark" | "church" | "waves";
+}
+
+export interface VibePlace {
+  id: string;
+  vibeId: string;
+  name: string;
+  cityLabel: "مسکو" | "سن‌پترزبورگ";
+  area: string;
+  proximity: string;
+  /** Omit when no verified photo is available yet — renders an icon placeholder instead. */
+  image?: string;
+  href: string;
+}
+
+/**
+ * PLACEHOLDER PROXIMITY LABELS — verify walking times before production.
+ * Only landmarks in Moscow and Saint Petersburg. Entries without an `image`
+ * don't have a verified photo yet — swap one in at the given path and it
+ * will render automatically. Each href routes to hotel results filtered
+ * near that specific landmark.
+ */
+export const tripVibes: TripVibe[] = [
+  { id: "historical", label: "تاریخی و میراث فرهنگی", icon: "landmark" },
+  { id: "religious", label: "کلیساها و اماکن مذهبی", icon: "church" },
+  { id: "riverside", label: "کنار رودخانه و غروب", icon: "waves" },
+];
+
+export const vibePlaces: VibePlace[] = [
+  // --- تاریخی و میراث فرهنگی ---
+  {
+    id: "saint-basils",
+    vibeId: "historical",
+    name: "کلیسای سنت باسیل",
+    cityLabel: "مسکو",
+    area: "میدان سرخ",
+    proximity: "هتل‌های نزدیک میدان سرخ",
+    image: "/images/hero/moscow-red-square.jpg",
+    href: "/search/hotels?destination=مسکو&near=saint-basils",
+  },
+  {
+    id: "historical-museum",
+    vibeId: "historical",
+    name: "موزه ملی تاریخ روسیه",
+    cityLabel: "مسکو",
+    area: "میدان سرخ",
+    proximity: "هتل‌های نزدیک میدان سرخ",
+    image: "/images/hero/historical-museum-facade.jpg",
+    href: "/search/hotels?destination=مسکو&near=historical-museum",
+  },
+  {
+    id: "winter-palace",
+    vibeId: "historical",
+    name: "کاخ زمستانی و موزه ارمیتاژ",
+    cityLabel: "سن‌پترزبورگ",
+    area: "میدان کاخ",
+    proximity: "هتل‌های نزدیک میدان کاخ",
+    href: "/search/hotels?destination=سن پترزبورگ&near=winter-palace",
+  },
+  {
+    id: "peter-paul-fortress",
+    vibeId: "historical",
+    name: "قلعه پطر و پولس",
+    cityLabel: "سن‌پترزبورگ",
+    area: "جزیره زایاچی",
+    proximity: "هتل‌های نزدیک جزیره زایاچی",
+    href: "/search/hotels?destination=سن پترزبورگ&near=peter-paul-fortress",
+  },
+
+  // --- کلیساها و اماکن مذهبی ---
+  {
+    id: "christ-saviour",
+    vibeId: "religious",
+    name: "کلیسای مسیح ناجی",
+    cityLabel: "مسکو",
+    area: "نزدیک خیابان آربات",
+    proximity: "هتل‌های نزدیک این کلیسا",
+    image: "/images/hero/christ-saviour-cathedral.jpg",
+    href: "/search/hotels?destination=مسکو&near=christ-saviour",
+  },
+  {
+    id: "savior-on-blood",
+    vibeId: "religious",
+    name: "کلیسای نجات‌دهنده خون‌ریخته‌شده",
+    cityLabel: "سن‌پترزبورگ",
+    area: "کنار کانال گریبایدوف",
+    proximity: "هتل‌های نزدیک این کلیسا",
+    href: "/search/hotels?destination=سن پترزبورگ&near=savior-on-blood",
+  },
+  {
+    id: "kazan-cathedral-spb",
+    vibeId: "religious",
+    name: "کلیسای جامع کازان",
+    cityLabel: "سن‌پترزبورگ",
+    area: "خیابان نوسکی پراسپکت",
+    proximity: "هتل‌های نزدیک نوسکی پراسپکت",
+    href: "/search/hotels?destination=سن پترزبورگ&near=kazan-cathedral-spb",
+  },
+
+  // --- کنار رودخانه و غروب ---
+  {
+    id: "moskva-embankment",
+    vibeId: "riverside",
+    name: "ساحل رود مسکوا",
+    cityLabel: "مسکو",
+    area: "نزدیک کرملین",
+    proximity: "هتل‌های نزدیک این ساحل",
+    image: "/images/hero/moscow-river-embankment.jpg",
+    href: "/search/hotels?destination=مسکو&near=moskva-embankment",
+  },
+  {
+    id: "neva-embankment",
+    vibeId: "riverside",
+    name: "ساحل رود نوا",
+    cityLabel: "سن‌پترزبورگ",
+    area: "نزدیک کاخ زمستانی",
+    proximity: "هتل‌های نزدیک این ساحل",
+    href: "/search/hotels?destination=سن پترزبورگ&near=neva-embankment",
+  },
+  {
+    id: "peterhof",
+    vibeId: "riverside",
+    name: "کاخ و باغ‌های پترهوف",
+    cityLabel: "سن‌پترزبورگ",
+    area: "کنار خلیج فنلاند",
+    proximity: "هتل‌های نزدیک پترهوف",
+    href: "/search/hotels?destination=سن پترزبورگ&near=peterhof",
+  },
+];
+
 /**
  * PLACEHOLDER METRICS — verify before production.
  * These values are for UI layout and marketing mock presentation only.
@@ -370,6 +503,7 @@ export const loyaltyPerks: LoyaltyPerk[] = [
 export interface FeaturedHotel {
   id: string;
   name: string;
+  nameEn?: string;
   city: string;
   stars: number;
   rating: number;
@@ -386,6 +520,7 @@ export const featuredHotels: FeaturedHotel[] = [
   {
     id: "bolshoy-moscow",
     name: "هتل بولشوی مسکو",
+    nameEn: "Bolshoy Hotel Moscow",
     city: "مسکو، روسیه",
     stars: 5,
     rating: 9.1,
@@ -400,6 +535,7 @@ export const featuredHotels: FeaturedHotel[] = [
   {
     id: "neva-premium-petersburg",
     name: "هتل نوا پرمیوم",
+    nameEn: "Neva Premium Hotel",
     city: "سن‌پترزبورگ، روسیه",
     stars: 4,
     rating: 8.8,
@@ -414,6 +550,7 @@ export const featuredHotels: FeaturedHotel[] = [
   {
     id: "kazan-palace",
     name: "هتل کازان پالاس",
+    nameEn: "Kazan Palace Hotel",
     city: "کازان، روسیه",
     stars: 4,
     rating: 8.6,

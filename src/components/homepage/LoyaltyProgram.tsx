@@ -1,11 +1,4 @@
-import {
-  Gift,
-  Headphones,
-  Lock,
-  LockOpen,
-  Sparkles,
-  Undo2,
-} from "lucide-react";
+import { Check, Gift, Headphones, Sparkles, Undo2 } from "lucide-react";
 import { loyaltyPerks, loyaltyTiers } from "@/data/homepage";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
@@ -23,89 +16,99 @@ export function LoyaltyProgram() {
       className="container-page pt-4 pb-12 sm:pt-5 sm:pb-16 lg:pt-6 lg:pb-[88px]"
       aria-label="باشگاه مسکوا"
     >
-      <div className="mb-6 max-w-xl sm:mb-8">
-        <p className="text-[13px] font-medium text-moscowa-orange">
-          باشگاه مسکوا
-        </p>
-        <h2 className="mt-1 text-[22px] font-bold text-moscowa-text sm:text-[26px] lg:text-[28px]">
-          هرچه بیشتر سفر کنی، بیشتر تخفیف می‌گیری
-        </h2>
-        <p className="mt-2 text-[14px] leading-7 text-moscowa-text-secondary">
-          با هر رزرو یک پله بالاتر می‌روید و تخفیف بیشتری روی هتل‌های روسیه دریافت می‌کنید.
-        </p>
-      </div>
-
-      <div className="space-y-2 sm:space-y-2.5">
-        {loyaltyTiers.map((tier) => {
-          const unlocked = tier.status === "unlocked";
-          return (
-            <div
-              key={tier.id}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl border px-3.5 py-2.5 sm:px-4 sm:py-3",
-                unlocked
-                  ? "border-moscowa-orange/50 bg-[color-mix(in_srgb,var(--color-moscowa-orange)_5%,white)]"
-                  : "border-moscowa-border bg-white",
-              )}
-            >
-              <span
-                className={cn(
-                  "inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1.5 text-[11.5px] font-semibold",
-                  unlocked
-                    ? "bg-moscowa-orange text-white"
-                    : "bg-moscowa-bg-secondary text-moscowa-text-muted",
-                )}
-              >
-                {unlocked ? (
-                  <LockOpen className="h-3 w-3" />
-                ) : (
-                  <Lock className="h-3 w-3" />
-                )}
-                سطح {tier.level}
-              </span>
-              <p className="min-w-0 flex-1 truncate text-[13.5px] sm:text-[14px]">
-                <span className="font-bold text-moscowa-purple">
-                  {tier.discount}
-                </span>
-                <span className="text-moscowa-text-secondary"> — {tier.title}</span>
-              </p>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="mt-4 space-y-3">
-        <div className="flex flex-col items-start gap-3 rounded-2xl bg-[linear-gradient(135deg,#4f2f7c_0%,#6b4a96_60%,#f84209_150%)] px-5 py-4 text-white sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <div>
-            <p className="text-[14px] font-bold sm:text-[15.5px]">
-              با ثبت‌نام، سطح ۱ باشگاه مسکوا فعال می‌شود
-            </p>
-            <p className="mt-1 text-[12px] text-white/80">
-              ۵٪ تخفیف روی اولین رزرو هتل خود در روسیه بگیرید
+      <div className="overflow-hidden rounded-3xl border border-moscowa-border bg-white">
+        {/* Header */}
+        <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7">
+          <div className="min-w-0">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--color-moscowa-green)_10%,white)] px-2.5 py-1 text-[11.5px] font-semibold text-moscowa-green">
+              <Sparkles className="h-3.5 w-3.5" strokeWidth={2} />
+              باشگاه مسکوا
+            </span>
+            <h2 className="mt-2.5 text-[19px] font-bold text-moscowa-text sm:text-[23px]">
+              هرچه بیشتر سفر کنی، بیشتر تخفیف می‌گیری
+            </h2>
+            <p className="mt-1.5 max-w-md text-[13px] leading-6 text-moscowa-text-secondary">
+              با هر رزرو یک پله بالاتر می‌روید و تخفیف بیشتری روی هتل‌های روسیه دریافت می‌کنید.
             </p>
           </div>
           <Button
             href="/auth/register"
-            variant="white"
-            size="sm"
+            variant="secondary"
+            size="md"
             className="w-full shrink-0 sm:w-auto"
           >
             ثبت‌نام رایگان
           </Button>
         </div>
 
-        <div className="flex gap-2.5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="h-px bg-moscowa-border" />
+
+        {/* Tier stepper */}
+        <div className="px-5 py-6 sm:px-7">
+          <div className="flex items-start">
+            {loyaltyTiers.map((tier, index) => {
+              const unlocked = tier.status === "unlocked";
+              const isLast = index === loyaltyTiers.length - 1;
+              return (
+                <div
+                  key={tier.id}
+                  className={cn(
+                    "flex items-center",
+                    isLast ? "shrink-0" : "flex-1",
+                  )}
+                >
+                  <div className="flex w-16 shrink-0 flex-col items-center gap-2 text-center sm:w-24">
+                    <span
+                      className={cn(
+                        "flex h-8 w-8 items-center justify-center rounded-full text-[12.5px] font-bold sm:h-9 sm:w-9",
+                        unlocked
+                          ? "bg-moscowa-green text-white"
+                          : "border-2 border-moscowa-border bg-white text-moscowa-text-muted",
+                      )}
+                    >
+                      {unlocked ? <Check className="h-4 w-4" strokeWidth={2.5} /> : tier.level}
+                    </span>
+                    <div>
+                      <p className="text-[11.5px] font-bold leading-4 text-moscowa-text sm:text-[12.5px]">
+                        {tier.title}
+                      </p>
+                      <p className="mt-0.5 text-[11px] font-semibold text-moscowa-purple sm:text-[12px]">
+                        {tier.discount}
+                      </p>
+                    </div>
+                  </div>
+                  {!isLast && (
+                    <div
+                      className={cn(
+                        "mx-1 h-[2px] flex-1 rounded-full sm:mx-2",
+                        unlocked ? "bg-moscowa-green" : "bg-moscowa-border",
+                      )}
+                    />
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="h-px bg-moscowa-border" />
+
+        {/* Perks grid */}
+        <div className="grid grid-cols-2 gap-px bg-moscowa-border sm:grid-cols-4">
           {loyaltyPerks.map((perk) => {
             const Icon = perkIcons[perk.icon];
             return (
               <div
                 key={perk.id}
-                className="flex shrink-0 items-center gap-2 rounded-full border border-moscowa-border bg-white px-3.5 py-2"
+                className="flex flex-col items-start gap-2 bg-white p-4 sm:p-5"
               >
-                <Icon className="h-4 w-4 text-moscowa-purple" strokeWidth={1.75} />
-                <span className="whitespace-nowrap text-[12.5px] font-medium text-moscowa-text">
+                <Icon className="h-[18px] w-[18px] text-moscowa-purple" strokeWidth={1.75} />
+                <p className="text-[12.5px] font-bold text-moscowa-text sm:text-[13px]">
                   {perk.title}
-                </span>
+                </p>
+                <p className="text-[11.5px] leading-5 text-moscowa-text-secondary sm:text-[12px]">
+                  {perk.description}
+                </p>
               </div>
             );
           })}

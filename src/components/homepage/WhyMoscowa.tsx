@@ -12,13 +12,9 @@ const icons = {
 export function WhyMoscowa() {
   return (
     <section
-      className="container-page pt-6 pb-6 sm:pt-8 sm:pb-8 lg:pt-10 lg:pb-10"
+      className="container-page pt-2 pb-6 sm:pt-3 sm:pb-8 lg:pt-4 lg:pb-10"
       aria-label="چرا مسکوا؟"
     >
-      <p className="mb-4 text-[13px] font-semibold tracking-wide text-moscowa-purple sm:mb-6">
-        چرا مسکوا؟
-      </p>
-
       <div
         className="flex gap-0 overflow-x-auto scroll-smooth [-ms-overflow-style:none] [scrollbar-width:none] md:grid md:grid-cols-4 md:overflow-visible md:divide-x md:divide-x-reverse md:divide-moscowa-border [&::-webkit-scrollbar]:hidden"
       >

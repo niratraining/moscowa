@@ -6,7 +6,6 @@ import { useRef } from "react";
 import { Building2, ChevronLeft, ChevronRight } from "lucide-react";
 import { popularDestinations } from "@/data/homepage";
 import { Badge } from "@/components/ui/Badge";
-import { Price } from "@/components/ui/Price";
 
 const faDigits = (value: number) =>
   new Intl.NumberFormat("fa-IR").format(value);
@@ -26,7 +25,7 @@ export function PopularDestinations() {
 
   return (
     <section
-      className="container-page pt-8 pb-8 sm:pt-10 sm:pb-10 lg:pt-12 lg:pb-12"
+      className="container-page pt-8 pb-4 sm:pt-10 sm:pb-5 lg:pt-12 lg:pb-6"
       aria-label="هتل‌های محبوب روسیه"
     >
 
@@ -68,35 +67,24 @@ export function PopularDestinations() {
                     className="object-cover transition-transform duration-700 group-hover:scale-[1.08]"
                     sizes="280px"
                   />
-                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/45 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/40 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
                   <Badge
                     tone="sky"
                     className="absolute right-3 top-3 shadow-soft"
                   >
                     هتل
                   </Badge>
-                  <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-2.5 py-1 text-white shadow-soft backdrop-blur-md supports-[backdrop-filter]:bg-white/10">
-                    <Building2 className="h-3.5 w-3.5" aria-hidden />
-                    <span className="text-[12px] font-bold leading-none">
-                      {faDigits(destination.hotelCount)}
-                    </span>
-                    <span className="text-[11px] font-medium leading-none text-white/85">
-                      هتل
-                    </span>
-                  </div>
                 </div>
-                <div className="p-4">
-                  <h3 className="text-[18px] font-bold text-moscowa-text">
+                <div className="flex items-center justify-between gap-2 p-4">
+                  <h3 className="text-[17px] font-bold text-moscowa-text">
                     {destination.city}
                   </h3>
-                  <p className="mt-1 text-[13px] text-moscowa-text-secondary">
-                    {destination.origin}
-                  </p>
-                  <Price
-                    amount={destination.priceFrom}
-                    prefix="هر شب از"
-                    className="mt-3"
-                  />
+                  <span className="inline-flex shrink-0 items-center gap-1 text-moscowa-text-secondary">
+                    <Building2 className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden />
+                    <span className="text-[12.5px] font-semibold leading-none">
+                      {faDigits(destination.hotelCount)} هتل
+                    </span>
+                  </span>
                 </div>
               </article>
             </Link>
