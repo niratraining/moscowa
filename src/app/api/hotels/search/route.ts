@@ -3,8 +3,6 @@ import { getOstrovokConfig } from "@/lib/ostrovok/config";
 import { resolveRussianRegion, searchAndNormalizeHotels } from "@/lib/ostrovok/normalize";
 import { OstrovokApiError, OstrovokNotConfiguredError } from "@/lib/ostrovok/client";
 
-export const runtime = "edge";
-
 interface SearchBody {
   destination?: string; // free text, e.g. "مسکو" or "Moscow"
   regionId?: number; // skip lookup if you already have it
