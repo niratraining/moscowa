@@ -2,6 +2,7 @@ import { AITravelAssistant } from "@/components/homepage/AITravelAssistant";
 import { AppDownload } from "@/components/homepage/AppDownload";
 import { DestinationSpotlight } from "@/components/homepage/DestinationSpotlight";
 import { Hero } from "@/components/homepage/Hero";
+import { LoyaltyProgram } from "@/components/homepage/LoyaltyProgram";
 import { PopularDestinations } from "@/components/homepage/PopularDestinations";
 import { PromoBanners } from "@/components/homepage/PromoBanners";
 import { WhyMoscowa } from "@/components/homepage/WhyMoscowa";
@@ -61,10 +62,11 @@ export default function HomePage() {
       <Hero />
       <TravelSearch />
       <PopularDestinations />
+      <WhyMoscowa />
+      <LoyaltyProgram />
       <PromoBanners />
       <DestinationSpotlight />
       <AITravelAssistant />
-      <WhyMoscowa />
       <AppDownload />
     </>
   );
