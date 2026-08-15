@@ -254,6 +254,76 @@ export const trustMetrics: TrustMetric[] = [
   },
 ];
 
+export interface LoyaltyTier {
+  id: string;
+  level: number;
+  status: "unlocked" | "locked";
+  title: string;
+  requirement: string;
+  discount: string;
+}
+
+export const loyaltyTiers: LoyaltyTier[] = [
+  {
+    id: "level-1",
+    level: 1,
+    status: "unlocked",
+    title: "ثبت‌نام و ورود",
+    requirement: "همین حالا با ثبت‌نام رایگان فعال می‌شود",
+    discount: "۵٪ تخفیف",
+  },
+  {
+    id: "level-2",
+    level: 2,
+    status: "locked",
+    title: "مسافر همیشگی",
+    requirement: "بعد از ۲ رزرو تکمیل‌شده باز می‌شود",
+    discount: "۷٪ تخفیف",
+  },
+  {
+    id: "level-3",
+    level: 3,
+    status: "locked",
+    title: "عضو طلایی",
+    requirement: "بعد از ۵ رزرو تکمیل‌شده باز می‌شود",
+    discount: "۱۰ تا ۱۵٪ تخفیف",
+  },
+];
+
+export interface LoyaltyPerk {
+  id: string;
+  title: string;
+  description: string;
+  icon: "cancel" | "support" | "priority" | "gift";
+}
+
+export const loyaltyPerks: LoyaltyPerk[] = [
+  {
+    id: "cancel",
+    title: "لغو رایگان",
+    description: "کنسلی بدون جریمه در بیشتر هتل‌های همکار",
+    icon: "cancel",
+  },
+  {
+    id: "support",
+    title: "پشتیبانی اختصاصی",
+    description: "اولویت پاسخ‌گویی برای اعضای باشگاه",
+    icon: "support",
+  },
+  {
+    id: "priority",
+    title: "دسترسی زودتر",
+    description: "دیدن تخفیف‌های ویژه پیش از انتشار عمومی",
+    icon: "priority",
+  },
+  {
+    id: "gift",
+    title: "هدیه تولد",
+    description: "کد تخفیف اختصاصی در ماه تولد شما",
+    icon: "gift",
+  },
+];
+
 export const trustPoints: TrustPoint[] = [
   {
     id: "refund",
