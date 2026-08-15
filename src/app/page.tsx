@@ -2,6 +2,7 @@ import { FeaturedHotels } from "@/components/homepage/FeaturedHotels";
 import { Hero } from "@/components/homepage/Hero";
 import { LoyaltyProgram } from "@/components/homepage/LoyaltyProgram";
 import { PopularDestinations } from "@/components/homepage/PopularDestinations";
+import { RecentSearchBar } from "@/components/homepage/RecentSearchBar";
 import { WhyMoscowa } from "@/components/homepage/WhyMoscowa";
 import { TravelSearch } from "@/components/search/TravelSearch";
 import { siteConfig } from "@/data/homepage";
@@ -56,6 +57,7 @@ export default function HomePage() {
   return (
     <>
       <JsonLd />
+      <RecentSearchBar />
       <Hero />
       <TravelSearch />
       <PopularDestinations />
