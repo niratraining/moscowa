@@ -30,6 +30,7 @@ export interface PopularDestination {
   type: DestinationType;
   image: string;
   href: string;
+  hotelCount: number;
 }
 
 export interface TrustMetric {
@@ -231,6 +232,7 @@ export const popularDestinations: PopularDestination[] = [
     type: "international",
     image: "/images/hero/moscow-red-square.jpg",
     href: "/search/hotels?destination=مسکو",
+    hotelCount: 128,
   },
   {
     id: "saint-petersburg",
@@ -240,6 +242,7 @@ export const popularDestinations: PopularDestination[] = [
     type: "international",
     image: "/images/hero/historical-museum-facade.jpg",
     href: "/search/hotels?destination=سن پترزبورگ",
+    hotelCount: 96,
   },
   {
     id: "kazan",
@@ -249,6 +252,7 @@ export const popularDestinations: PopularDestination[] = [
     type: "international",
     image: "/images/hero/kul-sharif-mosque.jpg",
     href: "/search/hotels?destination=کازان",
+    hotelCount: 54,
   },
   {
     id: "sochi",
@@ -258,6 +262,7 @@ export const popularDestinations: PopularDestination[] = [
     type: "international",
     image: "/images/mood/coastal-resort.jpg",
     href: "/search/hotels?destination=سوچی",
+    hotelCount: 71,
   },
 ];
 
