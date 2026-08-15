@@ -23,7 +23,7 @@ export function PopularDestinations() {
 
   return (
     <section
-      className="container-page pt-8 pb-12 sm:pt-10 sm:pb-16 lg:pt-12 lg:pb-[88px]"
+      className="container-page pt-8 pb-8 sm:pt-10 sm:pb-10 lg:pt-12 lg:pb-12"
       aria-label="هتل‌های محبوب روسیه"
     >
 
