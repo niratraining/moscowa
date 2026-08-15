@@ -38,7 +38,7 @@ export function WhyMoscowa() {
   }
 
   return (
-    <section className="container-page pt-8 pb-12 sm:pt-10 sm:pb-16 lg:pt-12 lg:pb-[88px]" aria-label="چرا مسکوا؟">
+    <section className="container-page pt-8 pb-8 sm:pt-10 sm:pb-10 lg:pt-12 lg:pb-12" aria-label="چرا مسکوا؟">
       <div className="relative">
         <button
           type="button"
