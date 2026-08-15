@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import { MapPin, Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { ResultsShell } from "@/components/demo/ResultsShell";
 import { HotelResultsDemo } from "@/components/demo/HotelResultsDemo";
+import { HotelResultCard } from "@/components/hotels/HotelResultCard";
 import { todayJdn, jdnToGregorian, formatFullLabel } from "@/lib/jalali";
 
 interface RegionSuggestion {
@@ -237,63 +237,20 @@ export function HotelResultsLive() {
             نتیجه‌ای برای این مقصد و تاریخ پیدا نشد.
           </p>
         )}
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="flex flex-col gap-4">
           {(hotels ?? []).map((hotel) => (
-            <article
+            <HotelResultCard
               key={hotel.id}
-              className="overflow-hidden rounded-[20px] border border-moscowa-border bg-white transition hover:-translate-y-0.5 hover:shadow-card"
-            >
-              <div className="relative block aspect-[16/10] bg-moscowa-bg-secondary">
-                {hotel.image ? (
-                  <Image
-                    src={hotel.image}
-                    alt={hotel.name}
-                    fill
-                    unoptimized
-                    className="object-cover"
-                    sizes="(max-width:768px) 100vw, 50vw"
-                  />
-                ) : null}
-                {hotel.stars > 0 && (
-                  <span className="absolute right-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[12px] font-medium text-moscowa-purple">
-                    {hotel.stars} ستاره
-                  </span>
-                )}
-              </div>
-              <div className="p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="text-[17px] font-bold text-moscowa-text">
-                      {hotel.name}
-                    </h3>
-                    <p className="mt-1 text-[13px] text-moscowa-text-secondary">
-                      {hotel.city} · {hotel.board}
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {hotel.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-moscowa-bg-secondary px-2.5 py-1 text-[11px] text-moscowa-text-secondary"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-4 flex items-center justify-between gap-3">
-                  <div>
-                    <p className="text-[12px] text-moscowa-text-muted">شروع از</p>
-                    <p className="text-[18px] font-bold text-moscowa-purple" dir="ltr">
-                      {priceLabel(hotel.priceFrom, hotel.currency)}
-                    </p>
-                  </div>
-                  <Button href={`/hotels/${hotel.id}`} size="sm">
-                    مشاهده اتاق‌ها
-                  </Button>
-                </div>
-              </div>
-            </article>
+              href={`/hotels/${hotel.id}`}
+              name={hotel.name}
+              city={hotel.city}
+              stars={hotel.stars}
+              board={hotel.board}
+              tags={hotel.tags}
+              image={hotel.image}
+              imageUnoptimized
+              priceLabel={priceLabel(hotel.priceFrom, hotel.currency)}
+            />
           ))}
         </div>
       </ResultsShell>

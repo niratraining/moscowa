@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
-import { PageHero } from "@/components/layout/PageHero";
+import Link from "next/link";
+import { ChevronLeft, Calendar, MapPin, Users } from "lucide-react";
 import { HotelResultsDemo } from "@/components/demo/HotelResultsDemo";
 import { TourResultsDemo } from "@/components/demo/TourResultsDemo";
 import { StayResultsDemo } from "@/components/demo/StayResultsDemo";
@@ -7,8 +8,13 @@ import {
   BusResultsDemo,
   TrainResultsDemo,
 } from "@/components/demo/TransportResultsDemo";
-import { ServiceSearchEmbed } from "@/components/search/ServiceSearchEmbed";
+import {
+  ResultsSearchBar,
+  type ResultsSearchSummaryItem,
+} from "@/components/search/ResultsSearchBar";
 import type { ServiceType } from "@/components/search/types";
+
+type SearchParams = Record<string, string | string[] | undefined>;
 
 const config: Record<
   string,
@@ -17,6 +23,7 @@ const config: Record<
     service: ServiceType;
     href: string;
     Demo: ComponentType;
+    summary: (params: SearchParams) => ResultsSearchSummaryItem[];
   }
 > = {
   hotels: {
@@ -24,56 +31,108 @@ const config: Record<
     service: "hotel",
     href: "/hotels",
     Demo: HotelResultsDemo,
+    summary: (p) => [
+      { icon: <MapPin className="h-4 w-4" />, label: str(p.destination, "مسکو") },
+      {
+        icon: <Calendar className="h-4 w-4" />,
+        label: `${str(p.checkIn, "۱۴۰۵/۰۳/۱۰")} – ${str(p.checkOut, "۱۴۰۵/۰۳/۱۵")}`,
+      },
+      {
+        icon: <Users className="h-4 w-4" />,
+        label: `${str(p.rooms, "۱")} اتاق، ${str(p.guests, "۲")} مهمان`,
+      },
+    ],
   },
   tours: {
     title: "نتایج جستجوی تور",
     service: "tour",
     href: "/tours",
     Demo: TourResultsDemo,
+    summary: (p) => [
+      { icon: <MapPin className="h-4 w-4" />, label: str(p.destination, "مسکو") },
+      { icon: <Calendar className="h-4 w-4" />, label: str(p.date, "۱۴۰۵/۰۳/۱۰") },
+      { icon: <Users className="h-4 w-4" />, label: `${str(p.passengers, "۱")} مسافر` },
+    ],
   },
   stays: {
     title: "نتایج جستجوی اقامتگاه",
     service: "stay",
     href: "/stays",
     Demo: StayResultsDemo,
+    summary: (p) => [
+      { icon: <MapPin className="h-4 w-4" />, label: str(p.city, "مسکو") },
+      {
+        icon: <Calendar className="h-4 w-4" />,
+        label: `${str(p.checkIn, "۱۴۰۵/۰۳/۱۰")} – ${str(p.checkOut, "۱۴۰۵/۰۳/۱۵")}`,
+      },
+      { icon: <Users className="h-4 w-4" />, label: `${str(p.guests, "۲")} مهمان` },
+    ],
   },
   trains: {
     title: "نتایج جستجوی قطار",
     service: "train",
     href: "/trains",
     Demo: TrainResultsDemo,
+    summary: (p) => [
+      {
+        icon: <MapPin className="h-4 w-4" />,
+        label: `${str(p.origin, "تهران")} ← ${str(p.destination, "مسکو")}`,
+      },
+      { icon: <Calendar className="h-4 w-4" />, label: str(p.date, "۱۴۰۵/۰۳/۱۰") },
+      { icon: <Users className="h-4 w-4" />, label: `${str(p.passengers, "۱")} مسافر` },
+    ],
   },
   buses: {
     title: "نتایج جستجوی اتوبوس",
     service: "bus",
     href: "/buses",
     Demo: BusResultsDemo,
+    summary: (p) => [
+      {
+        icon: <MapPin className="h-4 w-4" />,
+        label: `${str(p.origin, "تهران")} ← ${str(p.destination, "مسکو")}`,
+      },
+      { icon: <Calendar className="h-4 w-4" />, label: str(p.date, "۱۴۰۵/۰۳/۱۰") },
+      { icon: <Users className="h-4 w-4" />, label: `${str(p.passengers, "۱")} مسافر` },
+    ],
   },
 };
 
+function str(value: string | string[] | undefined, fallback: string) {
+  if (Array.isArray(value)) return value[0] || fallback;
+  return value || fallback;
+}
+
 export default async function GenericSearchPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ type: string }>;
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
+  searchParams: Promise<SearchParams>;
 }) {
   const { type } = await params;
+  const query = await searchParams;
   const page = config[type] ?? config.hotels;
   const Demo = page.Demo;
 
   return (
     <>
-      <PageHero
-        title={page.title}
-        description="نسخه دمو نتایج؛ اتصال API در فاز بعدی انجام می‌شود."
-        breadcrumbs={[
-          { label: page.title.replace("نتایج جستجوی ", ""), href: page.href },
-          { label: "نتایج جستجو" },
-        ]}
-      />
-      <div className="container-page -mt-6 pb-2 sm:-mt-8">
-        <ServiceSearchEmbed initialService={page.service} />
+      <div className="border-b border-moscowa-border bg-moscowa-bg-secondary/60">
+        <div className="container-page">
+          <nav aria-label="مسیر صفحه" className="flex items-center gap-1 py-3 text-[13px] text-moscowa-text-muted">
+            <Link href="/" className="hover:text-moscowa-purple">
+              صفحه اصلی
+            </Link>
+            <ChevronLeft className="h-3.5 w-3.5" aria-hidden />
+            <Link href={page.href} className="hover:text-moscowa-purple">
+              {page.title.replace("نتایج جستجوی ", "")}
+            </Link>
+            <ChevronLeft className="h-3.5 w-3.5" aria-hidden />
+            <span className="text-moscowa-text-secondary">نتایج جستجو</span>
+          </nav>
+        </div>
       </div>
+      <ResultsSearchBar service={page.service} items={page.summary(query)} />
       <Demo />
     </>
   );
