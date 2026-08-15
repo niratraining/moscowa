@@ -5,6 +5,7 @@ import { Baby, Bed, Minus, Plus, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toPersianDigits } from "@/lib/jalali";
 import { useOutsideClose } from "./DatePicker";
+import { FieldOverlay } from "./FieldOverlay";
 
 const MAX_ROOMS = 8;
 const MAX_ADULTS = 16;
@@ -117,57 +118,51 @@ export function HotelRoomGuestsSelector({ rooms, guests, onChange }: HotelRoomGu
         </span>
       </button>
 
-      {open ? (
-        <div
-          className={cn(
-            "absolute z-50 top-[calc(100%+8px)] w-full max-w-[calc(100vw-1.25rem)] origin-top animate-[calendar-pop_0.16s_ease-out_both]",
-            "right-0 inset-x-0 lg:inset-x-auto lg:w-[320px]",
-          )}
-        >
-          <div
-            id={panelId}
-            role="dialog"
-            aria-label="اتاق و مسافران"
-            className="rounded-2xl border border-moscowa-border bg-white p-4 shadow-search"
+      <FieldOverlay
+        open={open}
+        onOpenChange={setOpen}
+        title="اتاق و مسافران"
+        panelId={panelId}
+        desktopClassName="lg:w-[320px]"
+        footer={
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="h-11 w-full rounded-xl bg-moscowa-purple text-sm font-semibold text-white transition-colors hover:bg-moscowa-purple-dark"
           >
-            <StepperRow
-              icon={Bed}
-              label="اتاق"
-              value={rooms}
-              min={1}
-              max={MAX_ROOMS}
-              onChange={handleRooms}
-            />
-            <div className="border-t border-moscowa-border" />
-            <StepperRow
-              icon={Users}
-              label="بزرگسال"
-              sublabel="۱۳ سال به بالا"
-              value={adults}
-              min={rooms}
-              max={MAX_ADULTS}
-              onChange={handleAdults}
-            />
-            <div className="border-t border-moscowa-border" />
-            <StepperRow
-              icon={Baby}
-              label="کودک"
-              sublabel="۰ تا ۱۲ سال"
-              value={children}
-              min={0}
-              max={MAX_CHILDREN}
-              onChange={handleChildren}
-            />
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="mt-3 h-10 w-full rounded-xl bg-moscowa-purple text-sm font-semibold text-white transition-colors hover:bg-moscowa-purple-dark"
-            >
-              تأیید
-            </button>
-          </div>
-        </div>
-      ) : null}
+            تأیید
+          </button>
+        }
+      >
+        <StepperRow
+          icon={Bed}
+          label="اتاق"
+          value={rooms}
+          min={1}
+          max={MAX_ROOMS}
+          onChange={handleRooms}
+        />
+        <div className="border-t border-moscowa-border" />
+        <StepperRow
+          icon={Users}
+          label="بزرگسال"
+          sublabel="۱۳ سال به بالا"
+          value={adults}
+          min={rooms}
+          max={MAX_ADULTS}
+          onChange={handleAdults}
+        />
+        <div className="border-t border-moscowa-border" />
+        <StepperRow
+          icon={Baby}
+          label="کودک"
+          sublabel="۰ تا ۱۲ سال"
+          value={children}
+          min={0}
+          max={MAX_CHILDREN}
+          onChange={handleChildren}
+        />
+      </FieldOverlay>
     </div>
   );
 }

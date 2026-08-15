@@ -3,6 +3,7 @@ import { Hero } from "@/components/homepage/Hero";
 import { LoyaltyProgram } from "@/components/homepage/LoyaltyProgram";
 import { PopularDestinations } from "@/components/homepage/PopularDestinations";
 import { RecentSearchBar } from "@/components/homepage/RecentSearchBar";
+import { RussianCuisineSpotlight } from "@/components/homepage/RussianCuisineSpotlight";
 import { VibeTripPlanner } from "@/components/homepage/VibeTripPlanner";
 import { WhyMoscowa } from "@/components/homepage/WhyMoscowa";
 import { TravelSearch } from "@/components/search/TravelSearch";
@@ -65,6 +66,7 @@ export default function HomePage() {
       <VibeTripPlanner />
       <FeaturedHotels />
       <WhyMoscowa />
+      <RussianCuisineSpotlight />
       <LoyaltyProgram />
     </>
   );

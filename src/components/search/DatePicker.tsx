@@ -3,7 +3,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { CalendarDays, CalendarRange } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CalendarPopover } from "./Calendar";
+import { CalendarContent } from "./Calendar";
+import { FieldOverlay } from "./FieldOverlay";
 import {
   type CalendarSystem,
   formatFullLabel,
@@ -91,10 +92,14 @@ export function DatePicker({
 
       {error ? <p className="absolute bottom-1 right-4 text-[11px] text-red-600">{error}</p> : null}
 
-      {open ? (
-        <CalendarPopover
-          panelId={panelId}
-          ariaLabel={label}
+      <FieldOverlay
+        open={open}
+        onOpenChange={setOpen}
+        title={label}
+        panelId={panelId}
+        desktopClassName="lg:w-[340px]"
+      >
+        <CalendarContent
           mode="single"
           system={system}
           onSystemChange={setSystem}
@@ -110,7 +115,7 @@ export function DatePicker({
           }}
           onClear={() => onChange("")}
         />
-      ) : null}
+      </FieldOverlay>
     </div>
   );
 }
@@ -201,10 +206,14 @@ export function DateRangePicker({
 
       {error ? <p className="absolute bottom-1 right-4 text-[11px] text-red-600">{error}</p> : null}
 
-      {open ? (
-        <CalendarPopover
-          panelId={panelId}
-          ariaLabel={`${checkInLabel} / ${checkOutLabel}`}
+      <FieldOverlay
+        open={open}
+        onOpenChange={setOpen}
+        title={`${checkInLabel} / ${checkOutLabel}`}
+        panelId={panelId}
+        desktopClassName="lg:w-[min(680px,calc(100vw-1.25rem))]"
+      >
+        <CalendarContent
           mode="range"
           system={system}
           onSystemChange={setSystem}
@@ -221,7 +230,7 @@ export function DateRangePicker({
             setDraftEnd(null);
           }}
         />
-      ) : null}
+      </FieldOverlay>
     </div>
   );
 }

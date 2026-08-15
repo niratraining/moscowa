@@ -650,7 +650,92 @@ export const travelArticles: TravelArticle[] = [
   },
 ];
 
-export const footerColumns = {
+export interface RussianDish {
+  id: string;
+  name: string;
+  nameRu: string;
+  city: "مسکو" | "سن پترزبورگ" | "سراسر روسیه";
+  category: string;
+  description: string;
+  image: string;
+}
+
+export const russianDishes: RussianDish[] = [
+  {
+    id: "borscht",
+    name: "بورش",
+    nameRu: "Борщ",
+    city: "سراسر روسیه",
+    category: "سوپ",
+    description: "سوپ چغندر قرمز با خامه ترش، معروف‌ترین غذای خانگی روسیه.",
+    image: "/images/food/borscht.jpg",
+  },
+  {
+    id: "pelmeni",
+    name: "پلمنی",
+    nameRu: "Пельмени",
+    city: "سراسر روسیه",
+    category: "غذای اصلی",
+    description: "خمیر گوشت به شکل خوشه، شبیه پیراشکی سیبری، سرو با خامه ترش.",
+    image: "/images/food/pelmeni.jpg",
+  },
+  {
+    id: "beef-stroganoff",
+    name: "استروگانف گوشت",
+    nameRu: "Бефстроганов",
+    city: "مسکو",
+    category: "غذای اصلی",
+    description: "تکه‌های نازک گوشت گاو در سس خامه‌ای، از غذاهای کلاسیک مسکو.",
+    image: "/images/food/beef-stroganoff.jpg",
+  },
+  {
+    id: "shuba",
+    name: "سالاد شوبا",
+    nameRu: "Селёдка под шубой",
+    city: "سراسر روسیه",
+    category: "پیش‌غذا",
+    description: "سالاد لایه‌ای شاه‌ماهی دودی، چغندر و سیب‌زمینی؛ ثابت سفره‌های جشن.",
+    image: "/images/food/shuba.jpg",
+  },
+  {
+    id: "olivier",
+    name: "سالاد الویه",
+    nameRu: "Оливье",
+    city: "سراسر روسیه",
+    category: "پیش‌غذا",
+    description: "سالاد سیب‌زمینی، مرغ، تخم‌مرغ و نخود‌فرنگی با سس مایونز.",
+    image: "/images/food/olivier.jpg",
+  },
+  {
+    id: "solyanka",
+    name: "سولیانکا",
+    nameRu: "Солянка",
+    city: "سن پترزبورگ",
+    category: "سوپ",
+    description: "سوپ ترش و تند با انواع گوشت یا ماهی، پرطرفدار در فصل سرد.",
+    image: "/images/food/solyanka.jpg",
+  },
+  {
+    id: "blini",
+    name: "بلینی",
+    nameRu: "Блины",
+    city: "سراسر روسیه",
+    category: "صبحانه",
+    description: "کرپ نازک روسی، سرو شده با خاویار، عسل یا خامه ترش.",
+    image: "/images/food/blini.jpg",
+  },
+  {
+    id: "pirozhki",
+    name: "پیراشکی",
+    nameRu: "Пирожки",
+    city: "سن پترزبورگ",
+    category: "میان‌وعده",
+    description: "نان کوچک پرشده با گوشت، سیب‌زمینی یا کلم، غذای خیابانی محبوب.",
+    image: "/images/food/pirozhki.jpg",
+  },
+];
+
+
   services: [
     { label: "پرواز", href: "/flights" },
     { label: "هتل", href: "/hotels" },

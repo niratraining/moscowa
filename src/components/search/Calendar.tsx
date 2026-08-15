@@ -125,9 +125,7 @@ function MonthGrid({
   );
 }
 
-interface CalendarPopoverProps {
-  panelId: string;
-  ariaLabel: string;
+interface CalendarContentProps {
   mode: "single" | "range";
   system: CalendarSystem;
   onSystemChange: (system: CalendarSystem) => void;
@@ -142,9 +140,12 @@ interface CalendarPopoverProps {
   monthsToShow?: 1 | 2;
 }
 
-export function CalendarPopover({
-  panelId,
-  ariaLabel,
+/**
+ * The calendar UI itself, with no positioning or panel chrome — the caller
+ * (via `FieldOverlay`) supplies the popover shell on desktop and the
+ * full-screen sheet shell on mobile.
+ */
+export function CalendarContent({
   mode,
   system,
   onSystemChange,
@@ -157,24 +158,14 @@ export function CalendarPopover({
   onClear,
   quickNights,
   monthsToShow = 2,
-}: CalendarPopoverProps) {
+}: CalendarContentProps) {
   const [hoverJdn, setHoverJdn] = useState<number | null>(null);
   const secondAnchor = shiftMonthAnchor(anchorJdn, system, 1);
   const hasSelection = startJdn !== null;
   const showQuickNights = mode === "range" && !!quickNights && startJdn !== null && endJdn === null;
 
   return (
-    <div
-      id={panelId}
-      role="dialog"
-      aria-label={ariaLabel}
-      className={cn(
-        "absolute z-50 top-[calc(100%+8px)] w-full max-w-[calc(100vw-1.25rem)] origin-top animate-[calendar-pop_0.16s_ease-out_both]",
-        "right-0 inset-x-0 lg:inset-x-auto",
-        monthsToShow === 2 ? "lg:w-[min(680px,calc(100vw-1.25rem))]" : "lg:w-[340px]",
-      )}
-    >
-      <div className="rounded-2xl border border-moscowa-border bg-white p-4 shadow-search">
+    <div>
         <div className="mb-3 flex items-center justify-between gap-2">
           <div className="flex rounded-full bg-moscowa-bg-secondary p-1 text-[12px] font-medium">
             {(["jalali", "gregorian"] as const).map((s) => (
@@ -222,7 +213,7 @@ export function CalendarPopover({
           </button>
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex flex-col gap-6 lg:flex-row">
           <MonthGrid
             anchorJdn={anchorJdn}
             system={system}
@@ -234,7 +225,7 @@ export function CalendarPopover({
             onDayHover={setHoverJdn}
           />
           {monthsToShow === 2 ? (
-            <div className="hidden lg:block lg:flex-1">
+            <div className="lg:flex-1">
               <MonthGrid
                 anchorJdn={secondAnchor}
                 system={system}
@@ -278,7 +269,6 @@ export function CalendarPopover({
             ) : null}
           </div>
         ) : null}
-      </div>
     </div>
   );
 }
