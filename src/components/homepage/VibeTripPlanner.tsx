@@ -65,22 +65,12 @@ export function VibeTripPlanner() {
 
         <div className="h-px bg-moscowa-border" />
 
-        <div
-          className={cn(
-            "grid grid-cols-1 gap-px bg-moscowa-border",
-            places.length === 2 && "sm:grid-cols-2",
-            places.length >= 3 && "sm:grid-cols-2 lg:grid-cols-3",
-            places.length >= 4 && "lg:grid-cols-4",
-          )}
-        >
+        <div className="flex gap-3 overflow-x-auto scroll-smooth p-5 pt-4 [-ms-overflow-style:none] [scrollbar-width:none] sm:gap-4 sm:p-7 sm:pt-5 [&::-webkit-scrollbar]:hidden">
           {places.map((place) => (
             <Link
               key={place.id}
               href={place.href}
-              className={cn(
-                "group relative flex flex-col bg-white transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moscowa-purple/35",
-                places.length === 1 && "sm:max-w-sm",
-              )}
+              className="group w-[190px] shrink-0 overflow-hidden rounded-2xl border border-moscowa-border bg-white transition-all duration-300 hover:-translate-y-[3px] hover:shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moscowa-purple/35 sm:w-[220px]"
             >
               <div className="relative aspect-[16/10] overflow-hidden">
                 {place.image ? (
@@ -90,11 +80,11 @@ export function VibeTripPlanner() {
                     fill
                     loading="lazy"
                     className="object-cover transition-transform duration-700 group-hover:scale-[1.06]"
-                    sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 25vw"
+                    sizes="(max-width:640px) 190px, 220px"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-moscowa-purple via-moscowa-purple-soft to-moscowa-purple-dark transition-transform duration-700 group-hover:scale-[1.06]">
-                    <VibeIcon className="h-9 w-9 text-white/75" strokeWidth={1.4} />
+                    <VibeIcon className="h-8 w-8 text-white/75" strokeWidth={1.4} />
                   </div>
                 )}
                 <span className="absolute right-2.5 top-2.5 rounded-full bg-white/90 px-2 py-1 text-[10.5px] font-semibold text-moscowa-text shadow-soft backdrop-blur">
@@ -102,24 +92,22 @@ export function VibeTripPlanner() {
                 </span>
               </div>
 
-              <div className="flex flex-1 flex-col gap-2 p-4">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-[14.5px] font-bold text-moscowa-text sm:text-[15.5px]">
-                    {place.name}
-                  </h3>
-                  <ArrowLeft
-                    className="mt-0.5 h-4 w-4 shrink-0 text-moscowa-text-muted transition-transform duration-200 group-hover:-translate-x-1 group-hover:text-moscowa-purple"
-                    strokeWidth={2}
-                  />
-                </div>
+              <div className="flex flex-col gap-1.5 p-3.5">
+                <h3 className="truncate text-[13.5px] font-bold text-moscowa-text">
+                  {place.name}
+                </h3>
 
-                <p className="flex items-center gap-1 text-[12px] text-moscowa-text-secondary">
+                <p className="flex items-center gap-1 text-[11.5px] text-moscowa-text-secondary">
                   <MapPin className="h-3.5 w-3.5 shrink-0 text-moscowa-text-muted" strokeWidth={1.85} />
-                  {place.area}
+                  <span className="truncate">{place.area}</span>
                 </p>
 
-                <p className="mt-auto text-[11.5px] font-medium text-moscowa-green">
-                  {place.proximity}
+                <p className="flex items-center gap-1 text-[11px] font-medium text-moscowa-green">
+                  <span className="truncate">{place.proximity}</span>
+                  <ArrowLeft
+                    className="h-3 w-3 shrink-0 transition-transform duration-200 group-hover:-translate-x-1"
+                    strokeWidth={2.25}
+                  />
                 </p>
               </div>
             </Link>
