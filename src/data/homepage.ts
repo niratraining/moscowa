@@ -734,28 +734,3 @@ export const russianDishes: RussianDish[] = [
     image: "/images/food/pirozhki.jpg",
   },
 ];
-
-
-  services: [
-    { label: "پرواز", href: "/flights" },
-    { label: "هتل", href: "/hotels" },
-    { label: "تور", href: "/tours" },
-    { label: "قطار", href: "/trains" },
-    { label: "اتوبوس", href: "/buses" },
-    { label: "بیمه مسافرتی", href: "/insurance" },
-  ],
-  guide: [
-    { label: "راهنمای خرید", href: "/guide/buying" },
-    { label: "قوانین استرداد", href: "/guide/refund-policy" },
-    { label: "سوالات متداول", href: "/faq" },
-    { label: "پشتیبانی", href: "/support" },
-  ],
-  company: [
-    { label: "درباره ما", href: "/about" },
-    { label: "همکاری با ما", href: "/partners" },
-    { label: "سفر سازمانی", href: "/corporate" },
-    { label: "فرصت‌های شغلی", href: "/careers" },
-    { label: "پنل کاربری", href: "/account" },
-    { label: "پنل ادمین", href: "/admin" },
-  ],
-};
