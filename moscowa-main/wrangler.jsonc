@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "moscowa",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Non-secret Ostrovok/RateHawk settings. The two real credentials
+  // (OSTROVOK_KEY_ID, OSTROVOK_API_KEY) must NOT go here — set them with:
+  //   wrangler secret put OSTROVOK_KEY_ID
+  //   wrangler secret put OSTROVOK_API_KEY
+  "vars": {
+    "OSTROVOK_ENV": "sandbox",
+    "OSTROVOK_RESIDENCY": "ru",
+    "OSTROVOK_CURRENCY": "USD",
+    "OSTROVOK_MAX_RESULTS": "24"
+  }
+}
