@@ -83,17 +83,14 @@ export function Hero() {
       <div className="container-page relative z-10 flex h-full flex-col items-center justify-center pb-16 pt-10 text-center sm:pb-20 lg:pb-24">
         <div className="flex flex-col items-center motion-safe:animate-fade-up motion-safe:[animation-delay:120ms]">
           <Image
-            src="/brand/logo-mark-white.png"
-            alt=""
-            width={451}
-            height={353}
+            src="/brand/logo-stacked-white.png"
+            alt="Moscowa"
+            width={746}
+            height={498}
             priority
-            className="h-9 w-auto sm:h-10 lg:h-11"
+            className="h-14 w-auto sm:h-16 lg:h-[72px]"
           />
-          <p className="mt-3 text-[11px] font-medium tracking-[0.3em] text-white/65 sm:mt-4 sm:text-[12px]">
-            کالکشن روسیه
-          </p>
-          <h1 className="mt-2 text-[26px] font-bold leading-[1.25] text-white sm:text-[32px] lg:text-[38px]">
+          <h1 className="mt-4 text-[26px] font-bold leading-[1.25] text-white sm:mt-5 sm:text-[32px] lg:text-[38px]">
             رزرو هتل در مسکو
             <span className="mx-2 text-white/40">·</span>
             سن‌پترزبورگ
