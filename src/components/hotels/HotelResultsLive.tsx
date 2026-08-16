@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { MapPin, Search } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { InfiniteResultsList } from "@/components/ui/InfiniteResultsList";
 import { ResultsShell } from "@/components/demo/ResultsShell";
 import { HotelResultsDemo } from "@/components/demo/HotelResultsDemo";
 import { HotelResultCard } from "@/components/hotels/HotelResultCard";
@@ -237,10 +238,12 @@ export function HotelResultsLive() {
             نتیجه‌ای برای این مقصد و تاریخ پیدا نشد.
           </p>
         )}
-        <div className="flex flex-col gap-4">
-          {(hotels ?? []).map((hotel) => (
+        <InfiniteResultsList
+          items={hotels ?? []}
+          getKey={(hotel) => hotel.id}
+          className="flex flex-col gap-4"
+          renderItem={(hotel) => (
             <HotelResultCard
-              key={hotel.id}
               href={`/hotels/${hotel.id}`}
               name={hotel.name}
               city={hotel.city}
@@ -251,8 +254,8 @@ export function HotelResultsLive() {
               imageUnoptimized
               priceLabel={priceLabel(hotel.priceFrom, hotel.currency)}
             />
-          ))}
-        </div>
+          )}
+        />
       </ResultsShell>
     </div>
   );

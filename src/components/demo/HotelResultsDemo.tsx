@@ -1,5 +1,6 @@
 import { demoHotels, priceLabel } from "@/data/demo";
 import { HotelResultCard } from "@/components/hotels/HotelResultCard";
+import { InfiniteResultsList } from "@/components/ui/InfiniteResultsList";
 import { ResultsShell } from "./ResultsShell";
 
 export function HotelResultsDemo() {
@@ -31,10 +32,12 @@ export function HotelResultsDemo() {
         },
       ]}
     >
-      <div className="flex flex-col gap-4">
-        {demoHotels.map((hotel) => (
+      <InfiniteResultsList
+        items={demoHotels}
+        getKey={(hotel) => hotel.id}
+        className="flex flex-col gap-4"
+        renderItem={(hotel) => (
           <HotelResultCard
-            key={hotel.id}
             href={`/hotels/${hotel.id}`}
             name={hotel.name}
             city={hotel.city}
@@ -46,8 +49,8 @@ export function HotelResultsDemo() {
             score={hotel.score}
             reviews={hotel.reviews}
           />
-        ))}
-      </div>
+        )}
+      />
     </ResultsShell>
   );
 }
