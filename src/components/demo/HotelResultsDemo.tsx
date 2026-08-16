@@ -5,7 +5,7 @@ import { ResultsShell } from "./ResultsShell";
 export function HotelResultsDemo() {
   return (
     <ResultsShell
-      title="هتل‌های پیشنهادی"
+      title="نتایج جستجوی هتل"
       resultCount={demoHotels.length}
       sortOptions={[
         { id: "recommended", label: "پیشنهادی" },

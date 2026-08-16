@@ -20,7 +20,8 @@ interface ResultsSearchBarProps {
  * Slim, sticky "search recap" bar used at the top of results pages —
  * the pattern global OTAs (Booking, Skyscanner, …) use instead of
  * repeating the full-size homepage search box on every results page.
- * Clicking "ویرایش جستجو" reveals the same TravelSearch form inline.
+ * Clicking "ویرایش جستجو" reveals a compact, tabs-free edit form
+ * scoped to the current service (not the homepage's service switcher).
  */
 export function ResultsSearchBar({ service, items }: ResultsSearchBarProps) {
   const [editing, setEditing] = useState(false);
@@ -67,7 +68,7 @@ export function ResultsSearchBar({ service, items }: ResultsSearchBarProps) {
 
         {editing && (
           <div className="pb-4">
-            <TravelSearch initialService={service} embedded />
+            <TravelSearch initialService={service} embedded showTabs={false} />
           </div>
         )}
       </div>

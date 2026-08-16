@@ -26,11 +26,17 @@ import {
 interface TravelSearchProps {
   initialService?: ServiceType;
   embedded?: boolean;
+  /** Hide the service tabs and lock the form to `initialService`. Used for
+   * the compact "edit search" box on results pages — standard OTA pattern
+   * (Booking.com, Skyscanner, …) where editing a search stays scoped to
+   * the current service instead of re-showing the full homepage box. */
+  showTabs?: boolean;
 }
 
 export function TravelSearch({
   initialService = "hotel",
   embedded = false,
+  showTabs = true,
 }: TravelSearchProps) {
   const router = useRouter();
   const [state, setState] = useState<TravelSearchState>({
@@ -99,17 +105,22 @@ export function TravelSearch({
       <div className={embedded ? undefined : "container-page"}>
         <form
           onSubmit={handleSubmit}
-          className="relative z-30 mx-auto max-w-[1320px] overflow-visible rounded-[24px] border border-white/70 bg-white/95 shadow-search backdrop-blur-md supports-[backdrop-filter]:bg-white/90"
+          className={cn(
+            "relative z-30 mx-auto max-w-[1320px] overflow-visible border border-white/70 bg-white/95 shadow-search backdrop-blur-md supports-[backdrop-filter]:bg-white/90",
+            showTabs ? "rounded-[24px]" : "rounded-2xl",
+          )}
         >
-          <div className="overflow-hidden rounded-t-[24px]">
-            <SearchTabs
-              value={state.serviceType}
-              onChange={(serviceType) => {
-                setErrors({});
-                setState((prev) => ({ ...prev, serviceType }));
-              }}
-            />
-          </div>
+          {showTabs && (
+            <div className="overflow-hidden rounded-t-[24px]">
+              <SearchTabs
+                value={state.serviceType}
+                onChange={(serviceType) => {
+                  setErrors({});
+                  setState((prev) => ({ ...prev, serviceType }));
+                }}
+              />
+            </div>
+          )}
 
           <div
             className={cn(

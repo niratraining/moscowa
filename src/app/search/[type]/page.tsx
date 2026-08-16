@@ -1,6 +1,5 @@
 import type { ComponentType } from "react";
-import Link from "next/link";
-import { ChevronLeft, Calendar, MapPin, Users } from "lucide-react";
+import { Calendar, MapPin, Users } from "lucide-react";
 import { HotelResultsDemo } from "@/components/demo/HotelResultsDemo";
 import { TourResultsDemo } from "@/components/demo/TourResultsDemo";
 import { StayResultsDemo } from "@/components/demo/StayResultsDemo";
@@ -117,21 +116,6 @@ export default async function GenericSearchPage({
 
   return (
     <>
-      <div className="border-b border-moscowa-border bg-moscowa-bg-secondary/60">
-        <div className="container-page">
-          <nav aria-label="مسیر صفحه" className="flex items-center gap-1 py-3 text-[13px] text-moscowa-text-muted">
-            <Link href="/" className="hover:text-moscowa-purple">
-              صفحه اصلی
-            </Link>
-            <ChevronLeft className="h-3.5 w-3.5" aria-hidden />
-            <Link href={page.href} className="hover:text-moscowa-purple">
-              {page.title.replace("نتایج جستجوی ", "")}
-            </Link>
-            <ChevronLeft className="h-3.5 w-3.5" aria-hidden />
-            <span className="text-moscowa-text-secondary">نتایج جستجو</span>
-          </nav>
-        </div>
-      </div>
       <ResultsSearchBar service={page.service} items={page.summary(query)} />
       <Demo />
     </>
