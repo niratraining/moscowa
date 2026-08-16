@@ -1,17 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-interface InfiniteResultsListProps<T> {
-  items: T[];
-  renderItem: (item: T, index: number) => React.ReactNode;
+export interface InfiniteResultsItem {
+  key: string;
+  node: ReactNode;
+}
+
+interface InfiniteResultsListProps {
+  /**
+   * Pre-rendered items (each with a stable key). Deliberately NOT a
+   * `renderItem` function prop — Server Components (e.g. HotelResultsDemo)
+   * need to use this too, and functions can't be passed from a Server
+   * Component to a Client Component across the RSC boundary. Rendered
+   * ReactNode elements can.
+   */
+  items: InfiniteResultsItem[];
   /** Cards rendered on first paint. Keep small so the initial page stays fast. */
   initialCount?: number;
   /** Cards appended each time the sentinel scrolls into view. */
   batchSize?: number;
-  /** Unique key per item, for React + to reset paging when the result set changes. */
-  getKey: (item: T, index: number) => string;
-  renderSkeleton?: () => React.ReactNode;
   className?: string;
 }
 
@@ -22,21 +30,18 @@ interface InfiniteResultsListProps<T> {
  * use so a large result set never slows down the initial render. Resets to
  * the initial slice whenever the item set itself changes (new search).
  */
-export function InfiniteResultsList<T>({
+export function InfiniteResultsList({
   items,
-  renderItem,
   initialCount = 6,
   batchSize = 6,
-  getKey,
-  renderSkeleton,
   className,
-}: InfiniteResultsListProps<T>) {
+}: InfiniteResultsListProps) {
   const [visibleCount, setVisibleCount] = useState(
     Math.min(initialCount, items.length),
   );
   const [loadingMore, setLoadingMore] = useState(false);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
-  const itemsKey = items.map((item, i) => getKey(item, i)).join("|");
+  const itemsKey = items.map((item) => item.key).join("|");
 
   // New result set (new search / filter / sort) → start over from the fast
   // initial slice instead of dumping everything back in at once.
@@ -73,22 +78,19 @@ export function InfiniteResultsList<T>({
 
   return (
     <div className={className}>
-      {visibleItems.map((item, i) => (
-        <div key={getKey(item, i)}>{renderItem(item, i)}</div>
+      {visibleItems.map((item) => (
+        <div key={item.key}>{item.node}</div>
       ))}
 
       {hasMore && (
         <div ref={sentinelRef} aria-hidden className="h-px w-full" />
       )}
 
-      {loadingMore &&
-        (renderSkeleton ? (
-          renderSkeleton()
-        ) : (
-          <div className="flex items-center justify-center py-6">
-            <span className="h-5 w-5 animate-spin rounded-full border-2 border-moscowa-purple/30 border-t-moscowa-purple" />
-          </div>
-        ))}
+      {loadingMore && (
+        <div className="flex items-center justify-center py-6">
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-moscowa-purple/30 border-t-moscowa-purple" />
+        </div>
+      )}
     </div>
   );
 }

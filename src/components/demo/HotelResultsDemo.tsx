@@ -33,23 +33,24 @@ export function HotelResultsDemo() {
       ]}
     >
       <InfiniteResultsList
-        items={demoHotels}
-        getKey={(hotel) => hotel.id}
         className="flex flex-col gap-4"
-        renderItem={(hotel) => (
-          <HotelResultCard
-            href={`/hotels/${hotel.id}`}
-            name={hotel.name}
-            city={hotel.city}
-            stars={hotel.stars}
-            board={hotel.board}
-            tags={hotel.tags}
-            image={hotel.image}
-            priceLabel={priceLabel(hotel.priceFrom)}
-            score={hotel.score}
-            reviews={hotel.reviews}
-          />
-        )}
+        items={demoHotels.map((hotel) => ({
+          key: hotel.id,
+          node: (
+            <HotelResultCard
+              href={`/hotels/${hotel.id}`}
+              name={hotel.name}
+              city={hotel.city}
+              stars={hotel.stars}
+              board={hotel.board}
+              tags={hotel.tags}
+              image={hotel.image}
+              priceLabel={priceLabel(hotel.priceFrom)}
+              score={hotel.score}
+              reviews={hotel.reviews}
+            />
+          ),
+        }))}
       />
     </ResultsShell>
   );

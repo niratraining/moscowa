@@ -239,22 +239,23 @@ export function HotelResultsLive() {
           </p>
         )}
         <InfiniteResultsList
-          items={hotels ?? []}
-          getKey={(hotel) => hotel.id}
           className="flex flex-col gap-4"
-          renderItem={(hotel) => (
-            <HotelResultCard
-              href={`/hotels/${hotel.id}`}
-              name={hotel.name}
-              city={hotel.city}
-              stars={hotel.stars}
-              board={hotel.board}
-              tags={hotel.tags}
-              image={hotel.image}
-              imageUnoptimized
-              priceLabel={priceLabel(hotel.priceFrom, hotel.currency)}
-            />
-          )}
+          items={(hotels ?? []).map((hotel) => ({
+            key: hotel.id,
+            node: (
+              <HotelResultCard
+                href={`/hotels/${hotel.id}`}
+                name={hotel.name}
+                city={hotel.city}
+                stars={hotel.stars}
+                board={hotel.board}
+                tags={hotel.tags}
+                image={hotel.image}
+                imageUnoptimized
+                priceLabel={priceLabel(hotel.priceFrom, hotel.currency)}
+              />
+            ),
+          }))}
         />
       </ResultsShell>
     </div>
