@@ -12,7 +12,8 @@ export interface FilterGroup {
 }
 
 interface ResultsShellProps {
-  title: string;
+  /** Optional — omit when the summary bar above already shows this (e.g. live hotel results). */
+  title?: string;
   resultCount: number;
   filterGroups: FilterGroup[];
   sortOptions: { id: string; label: string }[];
@@ -20,6 +21,8 @@ interface ResultsShellProps {
   defaultSort?: string;
   /** Optional small label above the title. Omitted by default. */
   eyebrow?: string;
+  /** Hides the "N نتیجه پیدا شد" line while keeping resultCount for other UI (e.g. the filters sheet). */
+  hideResultCount?: boolean;
 }
 
 function FilterRow({
@@ -59,6 +62,7 @@ export function ResultsShell({
   children,
   defaultSort,
   eyebrow,
+  hideResultCount,
 }: ResultsShellProps) {
   const [sort, setSort] = useState(defaultSort ?? sortOptions[0]?.id);
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>(
@@ -111,12 +115,16 @@ export function ResultsShell({
           {eyebrow && (
             <p className="text-[13px] text-moscowa-text-muted">{eyebrow}</p>
           )}
-          <h2 className={cn("text-[22px] font-bold text-moscowa-text sm:text-[26px]", eyebrow && "mt-1")}>
-            {title}
-          </h2>
-          <p className="mt-1 text-[14px] text-moscowa-text-secondary">
-            {resultCount.toLocaleString("fa-IR")} نتیجه پیدا شد
-          </p>
+          {title && (
+            <h2 className={cn("text-[22px] font-bold text-moscowa-text sm:text-[26px]", eyebrow && "mt-1")}>
+              {title}
+            </h2>
+          )}
+          {!hideResultCount && (
+            <p className="mt-1 text-[14px] text-moscowa-text-secondary">
+              {resultCount.toLocaleString("fa-IR")} نتیجه پیدا شد
+            </p>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {filterGroups.length > 0 && (
