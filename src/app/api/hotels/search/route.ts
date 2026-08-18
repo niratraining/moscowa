@@ -1,15 +1,63 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getOstrovokConfig } from "@/lib/ostrovok/config";
-import { resolveRussianRegion, searchAndNormalizeHotels } from "@/lib/ostrovok/normalize";
-import { OstrovokApiError, OstrovokNotConfiguredError } from "@/lib/ostrovok/client";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 interface SearchBody {
   destination?: string; // free text, e.g. "مسکو" or "Moscow"
-  regionId?: number; // skip lookup if you already have it
+  regionId?: number; // kept for API-shape compatibility, unused with D1
   checkin: string; // YYYY-MM-DD
   checkout: string; // YYYY-MM-DD
   adults?: number;
   children?: number[];
+}
+
+interface HotelRow {
+  ota_hotel_id: string;
+  name: string;
+  name_en: string | null;
+  city: string | null;
+  city_slug: string | null;
+  image_url: string | null;
+  min_price: number | null;
+  currency: string | null;
+  available_rooms_percent: number | null;
+}
+
+interface D1ResultLike<T> {
+  results: T[];
+}
+
+interface D1PreparedStatementLike {
+  bind(...values: unknown[]): D1PreparedStatementLike;
+  all<T = unknown>(): Promise<D1ResultLike<T>>;
+}
+
+interface D1DatabaseLike {
+  prepare(query: string): D1PreparedStatementLike;
+}
+
+interface OstrovokEnv {
+  OSTROVOK_DB?: D1DatabaseLike;
+}
+
+/**
+ * Free-text destination -> city_slug used by the data pipeline (see
+ * moscowa-data-pipeline/ostrovok_hotels.py CITIES). Extend this list any
+ * time a new city is added to the pipeline.
+ */
+function resolveCitySlug(destination: string): string | null {
+  const q = destination.trim().toLowerCase();
+  if (!q) return "moscow";
+  if (q.includes("مسکو") || q.includes("moscow") || q.includes("mow")) return "moscow";
+  if (
+    q.includes("پترزبورگ") ||
+    q.includes("پترزبوگ") ||
+    q.includes("petersburg") ||
+    q.includes("spb") ||
+    q.includes("ledovyi")
+  ) {
+    return "st._petersburg";
+  }
+  return null;
 }
 
 function todayPlus(days: number) {
@@ -19,18 +67,6 @@ function todayPlus(days: number) {
 }
 
 export async function POST(req: NextRequest) {
-  const config = getOstrovokConfig();
-
-  if (!config.configured) {
-    return NextResponse.json({
-      configured: false,
-      source: "demo",
-      hotels: [],
-      message:
-        "OSTROVOK_KEY_ID / OSTROVOK_API_KEY not set yet — showing sample data until the RateHawk/Ostrovok B2B key arrives.",
-    });
-  }
-
   let body: SearchBody;
   try {
     body = await req.json();
@@ -40,55 +76,70 @@ export async function POST(req: NextRequest) {
 
   const checkin = body.checkin || todayPlus(14);
   const checkout = body.checkout || todayPlus(17);
-  const adults = body.adults && body.adults > 0 ? body.adults : 2;
+  const citySlug = resolveCitySlug(body.destination || "Moscow");
+
+  if (!citySlug) {
+    return NextResponse.json({
+      configured: true,
+      source: "d1",
+      hotels: [],
+      message: "این مقصد هنوز توسط پایپلاین داده پوشش داده نمی‌شود.",
+    });
+  }
 
   try {
-    let regionId = body.regionId ?? null;
-    let regionName = body.destination ?? "روسیه";
+    const { env } = await getCloudflareContext({ async: true });
+    const db = (env as unknown as OstrovokEnv).OSTROVOK_DB;
 
-    if (!regionId) {
-      const region = await resolveRussianRegion(body.destination || "Moscow");
-      if (!region) {
-        return NextResponse.json({
-          configured: true,
-          source: "live",
-          hotels: [],
-          message: "No Russian region matched that destination.",
-        });
-      }
-      regionId = region.id;
-      regionName = region.name;
+    if (!db) {
+      // D1 binding missing (e.g. local `next dev` without wrangler) -> let the
+      // client fall back to the demo grid instead of a hard error.
+      return NextResponse.json({ configured: false, source: "demo", hotels: [] });
     }
 
-    const result = await searchAndNormalizeHotels({
-      regionId,
-      regionName,
-      checkin,
-      checkout,
-      adults,
-      children: body.children ?? [],
-    });
+    const { results } = await db
+      .prepare(
+        `SELECT h.ota_hotel_id, h.name, h.name_en, h.city, h.city_slug, h.image_url,
+                s.min_price, s.currency, s.available_rooms_percent
+         FROM hotels h
+         LEFT JOIN hotel_stats s ON s.ota_hotel_id = h.ota_hotel_id
+         WHERE h.city_slug = ?
+         ORDER BY s.min_price ASC`,
+      )
+      .bind(citySlug)
+      .all<HotelRow>();
+
+    const hotels = results
+      .filter((r) => r.min_price != null)
+      .map((r) => ({
+        id: r.ota_hotel_id,
+        hid: Number(r.ota_hotel_id) || 0,
+        name: r.name_en || r.name,
+        city: r.city || "",
+        stars: 0,
+        board: "فقط اقامت",
+        priceFrom: r.min_price ?? 0,
+        // Only USD ever goes out over this API, regardless of what the
+        // pipeline stores internally (e.g. price_rub_min in D1).
+        currency: "USD",
+        image: r.image_url || "",
+        tags:
+          r.available_rooms_percent != null
+            ? [`${Math.round(r.available_rooms_percent)}٪ موجودی`]
+            : [],
+      }));
 
     return NextResponse.json({
       configured: true,
-      source: "live",
-      region: { id: regionId, name: result.regionName },
+      source: "d1",
+      region: { id: 0, name: body.destination || "روسیه" },
       checkin,
       checkout,
-      hotels: result.hotels,
+      hotels,
     });
   } catch (err) {
-    if (err instanceof OstrovokNotConfiguredError) {
-      return NextResponse.json({ configured: false, source: "demo", hotels: [] });
-    }
-    if (err instanceof OstrovokApiError) {
-      return NextResponse.json(
-        { configured: true, source: "live", error: err.message, hotels: [] },
-        { status: 502 },
-      );
-    }
     return NextResponse.json(
-      { configured: true, source: "live", error: "unexpected_error", hotels: [] },
+      { configured: true, source: "d1", error: "unexpected_error", hotels: [], detail: String(err) },
       { status: 500 },
     );
   }
