@@ -417,7 +417,6 @@ export function HotelDestinationCombobox({
           <div className="mb-2 flex items-center gap-2 rounded-xl bg-moscowa-bg-secondary px-3">
             <Search className="h-4 w-4 shrink-0 text-moscowa-purple" aria-hidden />
             <input
-              autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="مثلاً مسکو یا Ritz-Carlton"

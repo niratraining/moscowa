@@ -52,13 +52,13 @@ export const cabinClassLabels: Record<CabinClass, string> = {
 };
 
 function defaultDepartureDate(): string {
-  const jdn = todayJdn() + 14; // ۲ هفته دیگر، مثل بقیه‌ی جاهای اپ
+  const jdn = todayJdn(); // از همین امروز شروع بشه
   const { jy, jm, jd } = jdnToJalali(jdn);
   return formatJalaliString(jy, jm, jd);
 }
 
 function defaultReturnDate(): string {
-  const jdn = todayJdn() + 17; // ۳ شب بعد از رفت
+  const jdn = todayJdn() + 3; // ۳ شب بعد از رفت
   const { jy, jm, jd } = jdnToJalali(jdn);
   return formatJalaliString(jy, jm, jd);
 }
