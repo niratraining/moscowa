@@ -7,7 +7,7 @@ import { InfiniteResultsList } from "@/components/ui/InfiniteResultsList";
 import { ResultsShell } from "@/components/demo/ResultsShell";
 import { HotelResultsDemo } from "@/components/demo/HotelResultsDemo";
 import { HotelResultCard } from "@/components/hotels/HotelResultCard";
-import { todayJdn, jdnToGregorian, formatFullLabel } from "@/lib/jalali";
+import { todayJdn, jdnToGregorian, formatFullLabel, jdnFromValueString } from "@/lib/jalali";
 
 interface RegionSuggestion {
   id: number;
@@ -39,17 +39,31 @@ function priceLabel(amount: number, currency: string) {
   return `${symbol}${amount.toLocaleString("en-US")}`;
 }
 
-export function HotelResultsLive() {
-  const [query, setQuery] = useState("Moscow");
+interface HotelResultsLiveProps {
+  /** Destination text from the homepage/results search bar, e.g. "مسکو". */
+  initialDestination?: string;
+  /** Jalali "YYYY/MM/DD" strings, same format the search form stores (e.g. "۱۴۰۵/۰۶/۱۰"). */
+  initialCheckIn?: string;
+  initialCheckOut?: string;
+  initialGuests?: number;
+}
+
+export function HotelResultsLive({
+  initialDestination,
+  initialCheckIn,
+  initialCheckOut,
+  initialGuests,
+}: HotelResultsLiveProps = {}) {
+  const [query, setQuery] = useState(initialDestination || "Moscow");
   const [suggestions, setSuggestions] = useState<RegionSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [region, setRegion] = useState<{ id?: number; name: string }>({
-    name: "Moscow",
+    name: initialDestination || "Moscow",
   });
 
-  const checkInJdn = todayJdn() + 14;
-  const checkOutJdn = todayJdn() + 17;
-  const [adults, setAdults] = useState(2);
+  const checkInJdn = (initialCheckIn && jdnFromValueString(initialCheckIn)) || todayJdn() + 14;
+  const checkOutJdn = (initialCheckOut && jdnFromValueString(initialCheckOut)) || todayJdn() + 17;
+  const [adults, setAdults] = useState(initialGuests && initialGuests > 0 ? initialGuests : 2);
 
   const [hotels, setHotels] = useState<LiveHotel[] | null>(null);
   const [configured, setConfigured] = useState<boolean | null>(null);
