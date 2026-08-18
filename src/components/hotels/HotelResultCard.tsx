@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin, Star } from "lucide-react";
+import { ImageOff, MapPin, Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 function scoreWord(score: number) {
@@ -56,8 +56,24 @@ export function HotelResultCard({
               unoptimized={imageUnoptimized}
               className="object-cover transition duration-300 group-hover:scale-[1.03]"
               sizes="(max-width:640px) 100vw, 288px"
+              // If the CDN URL 404s or is blocked (hotlink protection, expired
+              // link, ...), swap to a plain placeholder instead of a broken image icon.
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+                e.currentTarget.parentElement
+                  ?.querySelector("[data-image-fallback]")
+                  ?.classList.remove("hidden");
+              }}
             />
           ) : null}
+          <div
+            data-image-fallback
+            className={`absolute inset-0 flex items-center justify-center bg-moscowa-bg-secondary text-moscowa-text-muted ${
+              image ? "hidden" : ""
+            }`}
+          >
+            <ImageOff className="h-6 w-6" aria-hidden />
+          </div>
         </Link>
 
         <div className="flex flex-1 flex-col justify-between gap-3 p-4 sm:p-5">
