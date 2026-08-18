@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import { Calendar, MapPin, Users } from "lucide-react";
 import { HotelResultsDemo } from "@/components/demo/HotelResultsDemo";
+import { HotelResultsLive } from "@/components/hotels/HotelResultsLive";
 import { TourResultsDemo } from "@/components/demo/TourResultsDemo";
 import { StayResultsDemo } from "@/components/demo/StayResultsDemo";
 import {
@@ -113,6 +114,22 @@ export default async function GenericSearchPage({
   const query = await searchParams;
   const page = config[type] ?? config.hotels;
   const Demo = page.Demo;
+
+  // هتل‌ها: به‌جای دیتای دمو، از داده‌ی زنده‌ی D1 (پایپلاین) استفاده کن.
+  // اگه D1 خالی یا کانفیگ نشده باشه، خودِ HotelResultsLive به دمو fallback می‌کنه.
+  if (type === "hotels") {
+    return (
+      <>
+        <ResultsSearchBar service={page.service} items={page.summary(query)} />
+        <HotelResultsLive
+          initialDestination={str(query.destination, "مسکو")}
+          initialCheckIn={str(query.checkIn, "")}
+          initialCheckOut={str(query.checkOut, "")}
+          initialGuests={Number(str(query.guests, "2"))}
+        />
+      </>
+    );
+  }
 
   return (
     <>
