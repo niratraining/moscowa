@@ -23,6 +23,8 @@ interface ResultsShellProps {
   eyebrow?: string;
   /** Hides the "N نتیجه پیدا شد" line while keeping resultCount for other UI (e.g. the filters sheet). */
   hideResultCount?: boolean;
+  /** Called whenever a sort pill is clicked, so the caller can actually reorder its results. */
+  onSortChange?: (sortId: string) => void;
 }
 
 function FilterRow({
@@ -63,6 +65,7 @@ export function ResultsShell({
   defaultSort,
   eyebrow,
   hideResultCount,
+  onSortChange,
 }: ResultsShellProps) {
   const [sort, setSort] = useState(defaultSort ?? sortOptions[0]?.id);
   const [activeFilters, setActiveFilters] = useState<Record<string, string[]>>(
@@ -146,7 +149,10 @@ export function ResultsShell({
             <button
               key={option.id}
               type="button"
-              onClick={() => setSort(option.id)}
+              onClick={() => {
+                setSort(option.id);
+                onSortChange?.(option.id);
+              }}
               className={cn(
                 "h-10 rounded-full px-4 text-[13px] font-medium transition-colors",
                 sort === option.id
