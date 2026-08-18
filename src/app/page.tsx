@@ -1,5 +1,6 @@
 import { FeaturedHotels } from "@/components/homepage/FeaturedHotels";
 import { Hero } from "@/components/homepage/Hero";
+import { OstrovokStatsWidget } from "@/components/homepage/OstrovokStatsWidget";
 import { LoyaltyProgram } from "@/components/homepage/LoyaltyProgram";
 import { PopularDestinations } from "@/components/homepage/PopularDestinations";
 import { RecentSearchBar } from "@/components/homepage/RecentSearchBar";
@@ -65,6 +66,7 @@ export default function HomePage() {
       <PopularDestinations />
       <VibeTripPlanner />
       <FeaturedHotels />
+      <OstrovokStatsWidget />
       <WhyMoscowa />
       <RussianCuisineSpotlight />
       <LoyaltyProgram />
