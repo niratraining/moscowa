@@ -18,8 +18,7 @@
     {
       "binding": "OSTROVOK_DB",
       "database_name": "ostrovok-db",
-      "database_id": "aa62f9cf-795f-4532-9123-c884debb2d11",
-      "experimental_remote": true
+      "database_id": "aa62f9cf-795f-4532-9123-c884debb2d11"
     }
   ]
 }
