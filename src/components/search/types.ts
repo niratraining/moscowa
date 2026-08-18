@@ -1,3 +1,5 @@
+import { todayJdn, jdnToJalali, formatJalaliString } from "@/lib/jalali";
+
 export type ServiceType =
   | "flight"
   | "hotel"
@@ -49,6 +51,18 @@ export const cabinClassLabels: Record<CabinClass, string> = {
   first: "فرست",
 };
 
+function defaultDepartureDate(): string {
+  const jdn = todayJdn() + 14; // ۲ هفته دیگر، مثل بقیه‌ی جاهای اپ
+  const { jy, jm, jd } = jdnToJalali(jdn);
+  return formatJalaliString(jy, jm, jd);
+}
+
+function defaultReturnDate(): string {
+  const jdn = todayJdn() + 17; // ۳ شب بعد از رفت
+  const { jy, jm, jd } = jdnToJalali(jdn);
+  return formatJalaliString(jy, jm, jd);
+}
+
 export const defaultSearchState: TravelSearchState = {
   serviceType: "flight",
   tripType: "roundtrip",
@@ -62,8 +76,8 @@ export const defaultSearchState: TravelSearchState = {
     name: "مسکو",
     subtitle: "مسکو، روسیه",
   },
-  departureDate: "۱۴۰۵/۰۳/۱۰",
-  returnDate: "۱۴۰۵/۰۳/۱۵",
+  departureDate: defaultDepartureDate(),
+  returnDate: defaultReturnDate(),
   passengers: {
     adults: 1,
     children: 0,
