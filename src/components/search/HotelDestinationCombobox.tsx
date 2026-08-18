@@ -26,6 +26,12 @@ interface HotelDestinationComboboxProps {
   error?: string;
 }
 
+/** City code (hotelCities/hotelDirectory) -> city_slug used by the D1 pipeline. */
+const CITY_SLUG_BY_CODE: Record<string, string> = {
+  MOW: "moscow",
+  LED: "st._petersburg",
+};
+
 type ResultRow =
   | { kind: "city"; key: string; city: CityOption }
   | { kind: "hotel"; key: string; hotel: HotelDirectoryItem };
@@ -234,13 +240,33 @@ export function HotelDestinationCombobox({
     return () => document.removeEventListener("mousedown", onPointerDown);
   }, [isMobile]);
 
+  const [liveCounts, setLiveCounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/hotels/counts")
+      .then((res) => res.json())
+      .then((json) => {
+        if (!cancelled && json?.counts) setLiveCounts(json.counts);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const hotelCountByCity = useMemo(() => {
     const map = new Map<string, number>();
     for (const hotel of hotelDirectory) {
       map.set(hotel.cityCode, (map.get(hotel.cityCode) ?? 0) + 1);
     }
+    // Live D1 counts win where the pipeline already covers that city.
+    for (const [code, slug] of Object.entries(CITY_SLUG_BY_CODE)) {
+      const live = liveCounts[slug];
+      if (live) map.set(code, live);
+    }
     return map;
-  }, []);
+  }, [liveCounts]);
 
   const q = query.trim();
 
