@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { CalendarDays, CalendarRange } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CalendarContent } from "./Calendar";
-import { FieldOverlay } from "./FieldOverlay";
+import { FieldOverlay, useIsMobileViewport } from "./FieldOverlay";
 import {
   type CalendarSystem,
   formatFullLabel,
@@ -58,7 +58,12 @@ export function DatePicker({
   const [system, setSystem] = useState<CalendarSystem>("jalali");
   const selectedJdn = jdnFromValueString(value);
   const [anchorJdn, setAnchorJdn] = useState(() => selectedJdn ?? todayJdn());
-  const rootRef = useOutsideClose(open, setOpen);
+  const isMobile = useIsMobileViewport();
+  // On mobile, FieldOverlay renders the calendar in a portaled Drawer (vaul) —
+  // outside this component's DOM subtree — so the outside-click check below
+  // would treat every tap inside the drawer as "outside" and close it before
+  // a day-click registers. The drawer already handles its own dismissal.
+  const rootRef = useOutsideClose(open && !isMobile, setOpen);
   const panelId = useId();
 
   useEffect(() => {
@@ -155,7 +160,10 @@ export function DateRangePicker({
   const [draftStart, setDraftStart] = useState<number | null>(committedStart);
   const [draftEnd, setDraftEnd] = useState<number | null>(committedEnd);
   const [anchorJdn, setAnchorJdn] = useState(() => committedStart ?? todayJdn());
-  const rootRef = useOutsideClose(open, setOpen);
+  const isMobile = useIsMobileViewport();
+  // Same portal issue as DatePicker above — skip our own outside-click
+  // handling on mobile since the Drawer manages its own dismissal.
+  const rootRef = useOutsideClose(open && !isMobile, setOpen);
   const panelId = useId();
   const error = checkInError || checkOutError;
 
