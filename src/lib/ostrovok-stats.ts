@@ -14,9 +14,21 @@ interface StatsRow {
   avg_availability: number | null;
 }
 
+interface D1PreparedStatementLike {
+  first<T = unknown>(): Promise<T | null>;
+}
+
+interface D1DatabaseLike {
+  prepare(query: string): D1PreparedStatementLike;
+}
+
+interface OstrovokEnv {
+  OSTROVOK_DB?: D1DatabaseLike;
+}
+
 export async function getOstrovokDailyStats(): Promise<OstrovokDailyStats | null> {
   const { env } = await getCloudflareContext({ async: true });
-  const db = env.OSTROVOK_DB;
+  const db = (env as unknown as OstrovokEnv).OSTROVOK_DB;
 
   if (!db) return null;
 
