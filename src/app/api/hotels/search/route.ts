@@ -119,9 +119,10 @@ export async function POST(req: NextRequest) {
         stars: 0,
         board: "فقط اقامت",
         priceFrom: r.min_price ?? 0,
-        // Only USD ever goes out over this API, regardless of what the
-        // pipeline stores internally (e.g. price_rub_min in D1).
-        currency: "USD",
+        // Respect whatever currency the pipeline actually stored the price
+        // in (e.g. RUB) instead of always labelling it USD — that mislabel
+        // was making prices look wrong (a RUB amount shown with a $ sign).
+        currency: r.currency || "USD",
         image: r.image_url || "",
         tags:
           r.available_rooms_percent != null
